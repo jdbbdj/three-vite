@@ -14,7 +14,6 @@ export default class Room {
 
     this.room = this.loader.items.room;
     this.actualRoom = this.room.scene;
-    console.log(this.actualRoom);
 
     this.setModel();
   }
@@ -32,6 +31,15 @@ export default class Room {
           groupChild.castShadow = true;
           groupChild.receiveShadow = true;
         });
+      }
+
+      if (child.name === "Aquarium") {
+        child.material = new THREE.MeshPhysicalMaterial();
+        child.material.roughness = 0;
+        child.material.color.set(0x80def9);
+        child.material.ior = 1;
+        child.material.transmission = 1.5;
+        child.material.opacity = 0.9;
       }
     });
 
