@@ -28,5 +28,10 @@ export default class World {
 
   resize() {}
 
-  update() {}
+  update() {
+    //animation of fish
+    if (this.room) {
+      this.room.update();
+    }
+  }
 }

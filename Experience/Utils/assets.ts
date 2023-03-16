@@ -2,7 +2,7 @@ export default [
   {
     name: "room",
     type: "glbModel",
-    path: "/models/RotatedFinaleAnimated.glb",
+    path: "/models/Another4.glb",
   },
   {
     name: "screen",

@@ -7,6 +7,7 @@ export default class Environment {
   loader: any;
   sunlight: any;
   light: any;
+  pointLight: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -31,10 +32,18 @@ export default class Environment {
     this.sunlight.shadow.normalBias = 0.05;
     this.sunlight.position.set(1.5, 7, 3);
     this.scene.add(this.sunlight);
-
+    //helper
+    const helper = new THREE.CameraHelper(this.sunlight.shadow.camera);
+    this.scene.add(helper);
     //ambientlight
     this.light = new THREE.AmbientLight("#ffffff", 0.4);
     this.scene.add(this.light);
+    //pointlight
+    this.pointLight = new THREE.PointLight("#ffffff");
+    //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
+    //this.scene.add(helper2);
+    this.pointLight.position.set(0.5, 0.6, -0.04);
+    this.scene.add(this.pointLight);
   }
   resize() {}
 
