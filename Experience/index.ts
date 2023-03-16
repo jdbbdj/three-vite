@@ -1,41 +1,50 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+//Global UTILS
+import Sizes from "./Utils/Sizes";
+import Time from "./Utils/Time";
 
+//Reusable
+import Camera from "./Camera";
+import Renderer from "./Renderer";
 export default class Experience {
   canvas: any;
+  static instance: any;
+  sizes: any;
+  scene: any;
+  camera: any;
+  renderer: any;
+  time: any;
+
   constructor(canvas: any) {
-    this.canvas = canvas;
-
-    const scene = new THREE.Scene();
-
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    camera.position.z = 5;
-
-    function animate() {
-      requestAnimationFrame(animate);
-
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-
-      renderer.render(scene, camera);
+    if (Experience.instance) {
+      return Experience.instance;
     }
+    Experience.instance = this;
+    this.canvas = canvas;
+    this.scene = new THREE.Scene();
+    this.time = new Time();
+    this.sizes = new Sizes();
+    this.camera = new Camera();
+    this.renderer = new Renderer();
 
-    animate();
+    this.sizes.on("resize", () => {
+      this.resize();
+    });
+
+    this.time.on("update", () => {
+      this.update();
+    });
+  }
+
+  resize() {
+    this.camera.resize();
+    this.renderer.resize();
+  }
+
+  update() {
+    this.camera.update();
+    this.renderer.update();
   }
 }

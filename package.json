@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/events": "^3.0.0",
     "@types/three": "^0.149.0",
+    "events": "^3.3.0",
     "typescript": "^4.9.3",
     "vite": "^4.1.0"
   },
