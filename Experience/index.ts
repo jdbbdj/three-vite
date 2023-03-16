@@ -1,13 +1,16 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+
 //Global UTILS
 import Sizes from "./Utils/Sizes";
 import Time from "./Utils/Time";
+import Loader from "./Utils/Loader";
 
+//assets
+import assets from "./Utils/assets";
 //Reusable
 import Camera from "./Camera";
 import Renderer from "./Renderer";
+import World from "./World/World";
 export default class Experience {
   canvas: any;
   static instance: any;
@@ -16,6 +19,8 @@ export default class Experience {
   camera: any;
   renderer: any;
   time: any;
+  world: any;
+  loader: any;
 
   constructor(canvas: any) {
     if (Experience.instance) {
@@ -28,6 +33,8 @@ export default class Experience {
     this.sizes = new Sizes();
     this.camera = new Camera();
     this.renderer = new Renderer();
+    this.loader = new Loader(assets);
+    this.world = new World();
 
     this.sizes.on("resize", () => {
       this.resize();
