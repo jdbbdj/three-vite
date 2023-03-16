@@ -6,6 +6,7 @@ export default class Environment {
   scene: any;
   loader: any;
   sunlight: any;
+  light: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -15,9 +16,12 @@ export default class Environment {
   }
 
   setSunlight() {
+    //AXES HELPER
+    const axesHelper = new THREE.AxesHelper(10);
+    this.scene.add(axesHelper);
     //GRID LINES START
-    const size = 100;
-    const divisions = 100;
+    const size = 10;
+    const divisions = 10;
     const gridHelper = new THREE.GridHelper(size, divisions);
     //GRID LINES END
     this.scene.add(gridHelper);
@@ -27,6 +31,10 @@ export default class Environment {
     this.sunlight.shadow.normalBias = 0.05;
     this.sunlight.position.set(1.5, 7, 3);
     this.scene.add(this.sunlight);
+
+    //ambientlight
+    this.light = new THREE.AmbientLight("#ffffff", 1);
+    this.scene.add(this.light);
   }
   resize() {}
 
