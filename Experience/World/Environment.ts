@@ -39,7 +39,7 @@ export default class Environment {
     this.light = new THREE.AmbientLight("#ffffff", 0.4);
     this.scene.add(this.light);
     //pointlight
-    this.pointLight = new THREE.PointLight("#ffffff");
+    this.pointLight = new THREE.PointLight("#ffffff", 0.5);
     //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
     //this.scene.add(helper2);
     this.pointLight.position.set(0.5, 0.6, -0.04);
