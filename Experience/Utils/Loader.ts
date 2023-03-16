@@ -65,12 +65,15 @@ export default class Loader extends EventEmitter {
         this.videoTexture[asset.name].magFilter = THREE.NearestFilter;
         this.videoTexture[asset.name].generateMipmaps = false;
         this.videoTexture[asset.name].encoding = THREE.sRGBEncoding;
+
+        this.singleAssetLoaded(asset, this.videoTexture[asset.name]);
       }
     }
   }
 
   singleAssetLoaded(asset: any, file: any) {
     this.items[asset.name] = file;
+    console.log(`asset ${asset.name} is loading`);
     this.loaded++;
     if (this.loaded === this.queue) {
       this.emit("ready");
