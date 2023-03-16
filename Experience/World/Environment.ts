@@ -15,6 +15,12 @@ export default class Environment {
   }
 
   setSunlight() {
+    //GRID LINES START
+    const size = 100;
+    const divisions = 100;
+    const gridHelper = new THREE.GridHelper(size, divisions);
+    //GRID LINES END
+    this.scene.add(gridHelper);
     this.sunlight = new THREE.DirectionalLight("#ffffff", 3);
     this.sunlight.castShadow = true;
     this.sunlight.shadow.mapSize.set(1024, 1024);
