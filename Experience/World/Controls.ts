@@ -18,6 +18,9 @@ export default class Controls {
   position: any;
   back: any;
   lookAtPosition: any;
+  directionalVector: any;
+  staticVector: any;
+  crossVector: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -37,6 +40,15 @@ export default class Controls {
       ease: 0.1,
     };
 
+    //for camera to directional in parallel with the curve
+    this.directionalVector = new THREE.Vector3(0, 0, 0);
+
+    //this is static that always points upward this will determine if the camera points inside or outside
+    //this uses substraction of vectors
+    this.staticVector = new THREE.Vector3(0, -1, 0);
+    //this will be the cross product of vector and will always be perpendicular to two of given vectors
+    this.crossVector = new THREE.Vector3(0, 0, 0);
+
     //lookat
     this.lookAtPosition = new THREE.Vector3(0, 0, 0);
     //path of camera
@@ -49,11 +61,11 @@ export default class Controls {
     //create a path that camera can follow
     this.curve = new THREE.CatmullRomCurve3(
       [
-        new THREE.Vector3(-10, 0, 10),
-        new THREE.Vector3(-5, 5, 5),
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(5, -5, 5),
-        new THREE.Vector3(10, 0, 10),
+        new THREE.Vector3(-5, 0, 0),
+
+        new THREE.Vector3(0, 0, -5),
+        new THREE.Vector3(5, 0, 0),
+        new THREE.Vector3(0, 0, 5),
       ],
       true
     );
@@ -92,29 +104,52 @@ export default class Controls {
       this.lerp.target,
       this.lerp.ease
     );
-    //making it automatic
-    if (this.back) {
-      this.lerp.target -= 0.001;
-    } else {
-      this.lerp.target += 0.001;
-    }
     //making sure your value is in range
     this.lerp.target = GSAP.utils.clamp(0, 1, this.lerp.target);
     this.lerp.current = GSAP.utils.clamp(0, 1, this.lerp.current);
+    //this part makes your camera points perpendicular to the curve
+    this.curve.getPointAt(this.lerp.current % 1, this.position);
+
+    this.camera.orthographicCamera.position.copy(this.position);
+
+    //substraction of vectors to be caught to used for cross product
+    this.directionalVector.subVectors(
+      this.curve.getPointAt((this.lerp.current % 1) + 0.000001),
+      this.position
+    );
+
+    //unit vector conversion
+    this.directionalVector.normalize();
+
+    //cross product
+    this.crossVector.crossVectors(this.directionalVector, this.staticVector);
+
+    //this makes the values inverse and makes the camera focus more accurate
+    this.crossVector.multiplyScalar(100000);
+    this.camera.orthographicCamera.lookAt(this.crossVector);
+
+    //--------------------BOTTOM ARE INITIAL FOR EXPLANATION------------------------
+    //making it automatic
+    // if (this.back) {
+    //   this.lerp.target -= 0.001;
+    // } else {
+    //   this.lerp.target += 0.001;
+    // }
+
     //get the first point on catmul rom curve
     //getpoint first param is the percentage 0 -1
     //second param is the basis of points
-    this.curve.getPointAt(this.lerp.current, this.position);
+    // this.curve.getPointAt(this.lerp.current, this.position);
 
     //watcher of the next point
-    this.curve.getPointAt(
-      (this.lerp.current += 0.00001) % 1,
-      this.lookAtPosition
-    );
+    // this.curve.getPointAt(
+    //   (this.lerp.current += 0.00001) % 1,
+    //   this.lookAtPosition
+    // );
     //copy the position
-    this.camera.orthographicCamera.position.copy(this.position);
+    // this.camera.orthographicCamera.position.copy(this.position);
 
     //this makes your camera align with the curve
-    this.camera.orthographicCamera.lookAt(this.lookAtPosition);
+    // this.camera.orthographicCamera.lookAt(this.lookAtPosition);
   }
 }
