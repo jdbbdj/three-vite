@@ -11,6 +11,7 @@ export default class Camera {
   orthographicCamera: any;
   frustum!: number;
   controls: any;
+  helper: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -35,21 +36,26 @@ export default class Camera {
 
     this.scene.add(this.perspectiveCamera);
     //to be changed for perspective
-    this.perspectiveCamera.position.z = 10;
+    this.perspectiveCamera.position.set(
+      -0.45073057379357784,
+      1.4849256797901773,
+      4.897236595254125
+    );
   }
 
   createOrthographicCamera() {
-    this.frustum = 5;
     this.orthographicCamera = new THREE.OrthographicCamera(
       (-this.sizes.aspect * this.sizes.frustum) / 2,
       (this.sizes.aspect * this.sizes.frustum) / 2,
       this.sizes.frustum / 2,
       -this.sizes.frustum / 2,
-      -100,
-      1000
+      -10,
+      10
     );
 
     this.scene.add(this.orthographicCamera);
+    this.helper = new THREE.CameraHelper(this.orthographicCamera);
+    this.scene.add(this.helper);
   }
 
   setOrbitControls() {
@@ -74,5 +80,11 @@ export default class Camera {
 
   update() {
     this.controls.update();
+
+    //orthographic camera setup
+    this.helper.matrixWorldNeedsUpdate = true;
+    this.helper.update();
+    this.helper.position.copy(this.orthographicCamera.position);
+    this.helper.rotation.copy(this.orthographicCamera.rotation);
   }
 }
