@@ -1,5 +1,6 @@
 import * as THREE from "three";
-
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 //Global UTILS
 import Sizes from "./Utils/Sizes";
 import Time from "./Utils/Time";
@@ -47,11 +48,17 @@ export default class Experience {
 
   resize() {
     this.camera.resize();
+    //animation of fish
+    this.world.resize();
+    //render
     this.renderer.resize();
   }
 
   update() {
     this.camera.update();
+    //animation of fish
+    this.world.update();
+    //render
     this.renderer.update();
   }
 }
