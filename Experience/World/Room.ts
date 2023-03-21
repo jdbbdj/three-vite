@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import Experience from "..";
+import GSAP from "gsap";
+
 export default class Room {
   experience: Experience;
   scene: any;
@@ -9,6 +11,9 @@ export default class Room {
   mixer: any;
   swim: any;
   time: any;
+  rotation: any;
+  lerp: any;
+  pointlight: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -18,9 +23,20 @@ export default class Room {
     this.time = this.experience.time;
     this.room = this.loader.items.room;
     this.actualRoom = this.room.scene;
-    console.log(this.room);
+    //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
+    this.pointlight = new THREE.PointLight("#80def9", 0.1);
+    //this.scene.add(helper2);
+    this.pointlight.position.set(5, 6.6, -0.04);
+    this.actualRoom.add(this.pointlight);
+    //lerping rotation
+    this.lerp = {
+      current: 0,
+      target: 0,
+      ease: 0.1,
+    };
     this.setModel();
     this.setAnimation();
+    this.onMouseMove();
   }
 
   setModel() {
@@ -67,9 +83,28 @@ export default class Room {
     this.swim.play();
   }
 
+  //on mouse move
+
+  onMouseMove() {
+    window.addEventListener("mousemove", (e) => {
+      //moves the object when you move your mouse to the right
+      this.rotation =
+        ((e.clientX - window.innerWidth / 2) * 2) / window.innerWidth;
+      //lerping rotation
+      this.lerp.target = this.rotation * 0.25;
+    });
+  }
+
   resize() {}
   //animation of fish
   update() {
+    this.lerp.current = GSAP.utils.interpolate(
+      this.lerp.current,
+      this.lerp.target,
+      this.lerp.ease
+    );
+
+    this.actualRoom.rotation.y = this.lerp.current;
     this.mixer.update(this.time.delta * 0.0009);
   }
 }

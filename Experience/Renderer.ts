@@ -40,25 +40,25 @@ export default class Renderer {
 
   update() {
     //creates a split view on your render
-    this.renderer.setViewport(0, 0, this.sizes.width, this.sizes.height);
-    this.renderer.render(this.scene, this.camera.orthographicCamera);
+    // this.renderer.setViewport(0, 0, this.sizes.width, this.sizes.height);
+    // this.renderer.render(this.scene, this.camera.orthographicCamera);
     //props for second screen
-    this.renderer.setScissorTest(true);
+    // this.renderer.setScissorTest(true);
 
     //clips the viewport
-    this.renderer.setViewport(
-      this.sizes.width - this.sizes.width / 3,
-      this.sizes.height - this.sizes.height / 3,
-      this.sizes.width / 3,
-      this.sizes.height / 3
-    );
+    // this.renderer.setViewport(
+    //   this.sizes.width - this.sizes.width / 3,
+    //   this.sizes.height - this.sizes.height / 3,
+    //   this.sizes.width / 3,
+    //   this.sizes.height / 3
+    // );
     //creates a section on your screen
-    this.renderer.setScissor(
-      this.sizes.width - this.sizes.width / 3,
-      this.sizes.height - this.sizes.height / 3,
-      this.sizes.width / 3,
-      this.sizes.height / 3
-    );
+    // this.renderer.setScissor(
+    //   this.sizes.width - this.sizes.width / 3,
+    //   this.sizes.height - this.sizes.height / 3,
+    //   this.sizes.width / 3,
+    //   this.sizes.height / 3
+    // );
 
     this.renderer.render(this.scene, this.camera.perspectiveCamera);
     //make sure to call this after

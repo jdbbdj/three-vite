@@ -99,38 +99,25 @@ export default class Controls {
 
   update() {
     //creating smooth camera movement
-    this.lerp.current = GSAP.utils.interpolate(
-      this.lerp.current,
-      this.lerp.target,
-      this.lerp.ease
-    );
-
     //LERPING ROTATIONS
-
     //making sure your value is in range
     // this.lerp.target = GSAP.utils.clamp(0, 1, this.lerp.target);
     // this.lerp.current = GSAP.utils.clamp(0, 1, this.lerp.current);
     //this part makes your camera points perpendicular to the curve
     //this.curve.getPointAt(this.lerp.current % 1, this.position);
-
     //this.camera.orthographicCamera.position.copy(this.position);
-
     //substraction of vectors to be caught to used for cross product
     //this.directionalVector.subVectors(
     //  this.curve.getPointAt((this.lerp.current % 1) + 0.000001),
     //  this.position
     //);
-
     //unit vector conversion
     //this.directionalVector.normalize();
-
     //cross product
     //this.crossVector.crossVectors(this.directionalVector, this.staticVector);
-
     //this makes the values inverse and makes the camera focus more accurate
     //this.crossVector.multiplyScalar(100000);
     //this.camera.orthographicCamera.lookAt(this.crossVector);
-
     //--------------------BOTTOM ARE INITIAL FOR EXPLANATION------------------------
     //making it automatic
     // if (this.back) {
@@ -138,12 +125,10 @@ export default class Controls {
     // } else {
     //   this.lerp.target += 0.001;
     // }
-
     //get the first point on catmul rom curve
     //getpoint first param is the percentage 0 -1
     //second param is the basis of points
     // this.curve.getPointAt(this.lerp.current, this.position);
-
     //watcher of the next point
     // this.curve.getPointAt(
     //   (this.lerp.current += 0.00001) % 1,
@@ -151,7 +136,6 @@ export default class Controls {
     // );
     //copy the position
     // this.camera.orthographicCamera.position.copy(this.position);
-
     //this makes your camera align with the curve
     // this.camera.orthographicCamera.lookAt(this.lookAtPosition);
   }

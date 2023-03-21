@@ -12,6 +12,7 @@ export default class Camera {
   frustum!: number;
   controls: any;
   helper: any;
+  controls2: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -53,15 +54,21 @@ export default class Camera {
       10
     );
 
+    this.orthographicCamera.position.set(0, 1, 2);
+    this.orthographicCamera.rotation.x = -Math.PI / 10;
+
     this.scene.add(this.orthographicCamera);
-    this.helper = new THREE.CameraHelper(this.orthographicCamera);
-    this.scene.add(this.helper);
+    // this.helper = new THREE.CameraHelper(this.orthographicCamera);
+    // this.scene.add(this.helper);
   }
 
   setOrbitControls() {
     this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
     this.controls.enableDamping = true;
     this.controls.enableZoom = true;
+    // this.controls2 = new OrbitControls(this.orthographicCamera, this.canvas);
+    // this.controls2.enableDamping = true;
+    // this.controls2.enableZoom = true;
   }
 
   resize() {
@@ -80,11 +87,11 @@ export default class Camera {
 
   update() {
     this.controls.update();
-
+    //console.log(this.orthographicCamera.position);
     //orthographic camera setup
-    this.helper.matrixWorldNeedsUpdate = true;
-    this.helper.update();
-    this.helper.position.copy(this.orthographicCamera.position);
-    this.helper.rotation.copy(this.orthographicCamera.rotation);
+    // this.helper.matrixWorldNeedsUpdate = true;
+    // this.helper.update();
+    // this.helper.position.copy(this.orthographicCamera.position);
+    // this.helper.rotation.copy(this.orthographicCamera.rotation);
   }
 }
