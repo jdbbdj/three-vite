@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  font-family: "Poppins", sans-serif;
+}
 .experience {
   position: fixed;
   width: 100vw;
@@ -13,4 +17,55 @@
 .experience-canvase {
   width: 100%;
   height: 100%;
+}
+/*actual page*/
+.page {
+  z-index: 99999;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.page-wrapper {
+  position: relative;
+}
+
+/*hero sectin*/
+.hero {
+  width: 100vw;
+  height: 100vh;
+}
+
+.hero-wrapper {
+  position: relative;
+  height: 100%;
+  width: calc(100% - 160px);
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+.hero-main {
+  position: absolute;
+  bottom: 150px;
+  left: 0;
+}
+
+.hero-main-title {
+  font-size: 42px;
+}
+
+.hero-main-description {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.hero-second {
+  position: absolute;
+  top: calc(50% - 100px);
+  right: -50px;
+}
+
+.hero-second-subheading {
+  font-size: 32px;
+  font-weight: 400;
 }
