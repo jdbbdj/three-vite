@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import Experience from "..";
 
 import Controls from "./Controls";

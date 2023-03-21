@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+
 //Global UTILS
 import Sizes from "./Utils/Sizes";
 import Time from "./Utils/Time";

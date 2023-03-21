@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import Experience from "..";
-import GSAP from "gsap";
 
 export default class Floor {
   experience: Experience;
