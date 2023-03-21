@@ -60,7 +60,7 @@ export default class Renderer {
     //   this.sizes.height / 3
     // );
 
-    this.renderer.render(this.scene, this.camera.perspectiveCamera);
+    this.renderer.render(this.scene, this.camera.orthographicCamera);
     //make sure to call this after
     this.renderer.setScissorTest(false);
   }

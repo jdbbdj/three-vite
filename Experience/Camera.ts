@@ -55,7 +55,7 @@ export default class Camera {
     );
 
     this.orthographicCamera.position.set(0, 1, 2);
-    this.orthographicCamera.rotation.x = -Math.PI / 10;
+    this.orthographicCamera.rotation.x = -Math.PI / 7;
 
     this.scene.add(this.orthographicCamera);
     // this.helper = new THREE.CameraHelper(this.orthographicCamera);
