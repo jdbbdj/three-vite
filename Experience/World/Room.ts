@@ -24,9 +24,18 @@ export default class Room {
     this.room = this.loader.items.room;
     this.actualRoom = this.room.scene;
     //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
-    this.pointlight = new THREE.PointLight("#80def9", 0.1);
+    const width = 1;
+    const height = 0.25;
+    this.pointlight = new THREE.RectAreaLight(0x80def9, 4, width, height);
+
     //this.scene.add(helper2);
-    this.pointlight.position.set(5, 6.6, -0.04);
+
+    this.pointlight.position.set(7, 6, 0);
+
+    this.pointlight.rotation.z = Math.PI / 10;
+    this.pointlight.rotation.y = Math.PI / 2;
+    // const rectLightHelper = new RectAreaLightHelper(this.pointlight);
+    // this.pointlight.add(rectLightHelper);
     this.actualRoom.add(this.pointlight);
     //lerping rotation
     this.lerp = {

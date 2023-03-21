@@ -7,15 +7,23 @@
 html,
 body {
   font-family: "Poppins", sans-serif;
-  color: var(--primary-color);
+  color: var(--background-color);
 }
 
 /*Variables--------------------------------------------------*/
 :root {
-  --text-black: #0d0d0d;
-  --text-black-secondary: #272727;
   --primary-color: #1b2325;
   --secondary-color: #b5d1e2;
+}
+
+.light-theme {
+  --color-text: var(--primary-color);
+  --background-color: var(--secondary-color);
+}
+
+.dark-theme {
+  --color-text: var(--secondary-color);
+  --background-color: var(--primary-color);
 }
 
 /*experience page 3D model--------------------------------------------------*/
@@ -41,6 +49,59 @@ body {
   position: relative;
 }
 
+/*dark and light mode--------------------------------------------------*/
+.toggle-bar {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  top: 48px;
+  right: 48px;
+  z-index: 9999999;
+}
+
+.sun-wrapper,
+.moon-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle-button {
+  cursor: pointer;
+  position: relative;
+  width: 56px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-text);
+  border-radius: 999px;
+  margin: 0px 16px;
+  border: none;
+  box-shadow: var(--color-text) 0px 3px 8px;
+}
+
+.toggle-circle {
+  position: absolute;
+  left: 6px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: var(--background-color);
+  transition: all 0.2s ease-in-out;
+}
+
+/* .toggle-button:hover .toggle-circle {
+  transform: scale(0.9);
+} */
+
+.slide {
+  transform: translateX(24px);
+}
+
 /*sections---------------------------------------------------*/
 
 .section-margin {
@@ -52,7 +113,7 @@ body {
   width: 50%;
   padding: 1000px 4%;
   margin: 0;
-  background-color: var(--secondary-color);
+  background-color: var(--color-text);
 }
 
 .left {
@@ -65,7 +126,7 @@ body {
 .section-intro-wrapper {
   position: relative;
   padding: 20% 5%;
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 2px solid var(--background-color);
   padding-bottom: 400px;
 }
 
@@ -92,7 +153,7 @@ body {
 
 .section-title {
   position: relative;
-  color: var(--primary-color);
+  color: var(--background-color);
 }
 
 .section-title-text {
@@ -115,7 +176,7 @@ body {
   width: 100%;
   max-width: 278px;
   height: 60px;
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--background-color);
   transform-origin: left;
   transform: skewY(-25deg);
 }
@@ -131,7 +192,7 @@ body {
 .styleThree {
   top: 80px;
   transform: skewY(25deg);
-  background-color: var(--primary-color);
+  background-color: var(--background-color);
 }
 
 .section-number {
@@ -163,11 +224,13 @@ body {
 
 .hero-main-title {
   font-size: 42px;
+  color: var(--color-text);
 }
 
 .hero-main-description {
   font-size: 14px;
   opacity: 0.7;
+  color: var(--color-text);
 }
 
 .hero-second {
@@ -179,4 +242,10 @@ body {
 .hero-second-subheading {
   font-size: 32px;
   font-weight: 400;
+  color: var(--color-text);
+}
+
+/*svg*/
+path {
+  fill: var(--color-text);
 }

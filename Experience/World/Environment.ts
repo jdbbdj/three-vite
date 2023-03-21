@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Experience from "..";
-
+import GSAP from "gsap";
 export default class Environment {
   experience: Experience;
   scene: any;
@@ -35,9 +35,39 @@ export default class Environment {
     // const helper = new THREE.CameraHelper(this.sunlight.shadow.camera);
     // this.scene.add(helper);
     //ambientlight
+
     this.light = new THREE.AmbientLight("#ffffff", 0.4);
     this.scene.add(this.light);
     //pointlight
+  }
+
+  switchTheme(theme: any) {
+    if (theme === "dark") {
+      //animate the color
+      GSAP.to(this.sunlight.color, {
+        r: 10 / 255,
+        g: 10 / 255,
+        b: 10 / 255,
+      });
+
+      GSAP.to(this.light.color, {
+        r: 35 / 255,
+        g: 35 / 255,
+        b: 35 / 255,
+      });
+    } else if (theme === "light") {
+      GSAP.to(this.sunlight.color, {
+        r: 1,
+        g: 1,
+        b: 1,
+      });
+
+      GSAP.to(this.light.color, {
+        r: 1,
+        g: 1,
+        b: 1,
+      });
+    }
   }
   resize() {}
 
