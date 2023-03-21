@@ -1,4 +1,6 @@
 import Experience from "..";
+import GSAP from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 export default class Controls {
   experience: Experience;
   scene: any;
@@ -12,13 +14,15 @@ export default class Controls {
   dummyCurve: any;
   camera: any;
   progress: number | undefined;
-  lerp: { current: number; target: number; ease: number };
+  //lerp: { current: number; target: number; ease: number };
   position: any;
   back: any;
   lookAtPosition: any;
   directionalVector: any;
   staticVector: any;
   crossVector: any;
+  timeline: any;
+  sizes: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -26,17 +30,19 @@ export default class Controls {
     this.loader = this.experience.loader;
     this.time = this.experience.time;
     this.camera = this.experience.camera;
-
+    this.room = this.experience.world.room.actualRoom;
+    this.sizes = this.experience.sizes;
+    GSAP.registerPlugin(ScrollTrigger);
     // this.progress = 0;
     // this.dummyCurve = new THREE.Vector3(0, 0, 0);
 
     //lerping making your movement more smoother
     // this.position = new THREE.Vector3(0, 0, 0);
-    this.lerp = {
-      current: 0,
-      target: 0,
-      ease: 0.1,
-    };
+    // this.lerp = {
+    //   current: 0,
+    //   target: 0,
+    //   ease: 0.1,
+    // };
 
     //for camera to directional in parallel with the curve
     // this.directionalVector = new THREE.Vector3(0, 0, 0);
@@ -49,49 +55,65 @@ export default class Controls {
 
     //lookat
     // this.lookAtPosition = new THREE.Vector3(0, 0, 0);
-    //path of camera
-    // this.setPath();
+    //path of scroll
+    this.setPath();
     //when scrolling the camera moves
     // this.onScrolling();
   }
 
-  // setPath() {
-  //   //create a path that camera can follow
-  //   this.curve = new THREE.CatmullRomCurve3(
-  //     [
-  //       new THREE.Vector3(-5, 0, 0),
+  setPath() {
+    //   //create a path that camera can follow
+    //   this.curve = new THREE.CatmullRomCurve3(
+    //     [
+    //       new THREE.Vector3(-5, 0, 0),
+    //       new THREE.Vector3(0, 0, -5),
+    //       new THREE.Vector3(5, 0, 0),
+    //       new THREE.Vector3(0, 0, 5),
+    //     ],
+    //     true
+    //   );
+    //   const points = this.curve.getPoints(50);
+    //   const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    //   const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    //   // Create the final object to add to the scene
+    //   const curveObject = new THREE.Line(geometry, material);
+    //   this.scene.add(curveObject);
+    // }
+    // onScrolling() {
+    //   window.addEventListener("wheel", (e) => {
+    //     //scroll up
+    //     if (e.deltaY > 0) {
+    //       this.lerp.target += 0.01;
+    //       //helper for increase
+    //       this.back = false;
+    //     } else if (e.deltaY < 0) {
+    //       this.lerp.target -= 0.01;
+    //       this.back = true;
+    //     }
+    //   });
+    //scroll
+    this.timeline = GSAP.timeline();
+    //moves our room
+    this.timeline.to(this.room.position, {
+      x: () => {
+        /*a function that reruns when resized */
+        return this.sizes.width * 0.002;
+      },
+      scrollTrigger: {
+        /*targets the class of element*/
+        trigger: ".first-scroll",
+        markers: true,
+        start: "top top",
+        end: "bottom bottom",
 
-  //       new THREE.Vector3(0, 0, -5),
-  //       new THREE.Vector3(5, 0, 0),
-  //       new THREE.Vector3(0, 0, 5),
-  //     ],
-  //     true
-  //   );
+        /*makes the animation more smooth */
+        scrub: 0.6,
 
-  //   const points = this.curve.getPoints(50);
-  //   const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-  //   const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-
-  //   // Create the final object to add to the scene
-  //   const curveObject = new THREE.Line(geometry, material);
-
-  //   this.scene.add(curveObject);
-  // }
-
-  // onScrolling() {
-  //   window.addEventListener("wheel", (e) => {
-  //     //scroll up
-  //     if (e.deltaY > 0) {
-  //       this.lerp.target += 0.01;
-  //       //helper for increase
-  //       this.back = false;
-  //     } else if (e.deltaY < 0) {
-  //       this.lerp.target -= 0.01;
-  //       this.back = true;
-  //     }
-  //   });
-  // }
+        /* */
+        invalidateOnRefresh: true,
+      },
+    });
+  }
 
   resize() {}
 
