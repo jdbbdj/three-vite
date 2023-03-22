@@ -22,28 +22,10 @@ export default class Room {
     //animation of fish
     this.time = this.experience.time;
     this.room = this.loader.items.room;
-    console.log(this.room);
+
     this.actualRoom = this.room.scene;
     //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
 
-    this.pointlight = new THREE.SpotLight(
-      0x80def9,
-      1,
-      100,
-      Math.PI / 4,
-      0.5,
-      2
-    );
-
-    //this.scene.add(helper2);
-
-    this.pointlight.position.set(6, 7.5, 0);
-
-    this.pointlight.rotation.z = Math.PI / 10;
-    this.pointlight.rotation.y = Math.PI / 2;
-    // const rectLightHelper = new RectAreaLightHelper(this.pointlight);
-    // this.pointlight.add(rectLightHelper);
-    this.actualRoom.add(this.pointlight);
     //lerping rotation
     this.lerp = {
       current: 0,
@@ -71,7 +53,6 @@ export default class Room {
       }
 
       if (child.name === "Aquarium") {
-        console.log(child);
         child.material = new THREE.MeshPhysicalMaterial();
         child.material.roughness = 0;
         child.material.color.set(0x80def9);
@@ -86,7 +67,26 @@ export default class Room {
         });
       }
     });
+    const width = 1;
+    const height = 0.25;
+    const intensity = 3;
+    this.pointlight = new THREE.RectAreaLight(
+      0xffffff,
+      intensity,
+      width,
+      height
+    );
 
+    this.pointlight.lookAt(0, 0, 0);
+    //this.scene.add(helper2);
+
+    this.pointlight.position.set(6.5, 7, 0);
+    this.pointlight.rotation.y = Math.PI - Math.PI / 4;
+
+    // const rectLightHelper = new RectAreaLightHelper(this.pointlight);
+    // this.pointlight.add(rectLightHelper);
+
+    this.actualRoom.add(this.pointlight);
     //shadow end
     this.scene.add(this.actualRoom);
     this.actualRoom.scale.set(0.11, 0.11, 0.11);

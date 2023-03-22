@@ -129,6 +129,16 @@ svg {
   transform: translateX(24px);
 }
 
+.slideColored {
+  background-color: var(--color-text);
+}
+
+.buttonColored {
+  background-color: var(--background-color);
+  box-shadow: var(--background-color) 0px 3px 8px;
+  fill: var(--background-color);
+}
+
 /*sections---------------------------------------------------*/
 
 .section-margin {

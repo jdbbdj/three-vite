@@ -23,6 +23,14 @@ export default class Controls {
   crossVector: any;
   timeline: any;
   sizes: any;
+  firstMoveTimeLine: any;
+  secondMoveTimeLine: gsap.core.Timeline | undefined;
+  thirdMoveTimeLine: gsap.core.Timeline | undefined;
+  pointlight: any;
+  rectlight: any;
+  button: any;
+  circle: any;
+  theme: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -32,7 +40,17 @@ export default class Controls {
     this.camera = this.experience.camera;
     this.room = this.experience.world.room.actualRoom;
     this.sizes = this.experience.sizes;
+    this.button = this.experience.theme?.toggleButton;
+    this.circle = this.experience.theme?.toggleCircle;
+    this.room.children.forEach((child: any) => {
+      if (child.type === "RectAreaLight") {
+        this.rectlight = child;
+      }
+    });
+    this.theme = this.experience.theme;
     GSAP.registerPlugin(ScrollTrigger);
+
+    this.setScrollTrigger();
     // this.progress = 0;
     // this.dummyCurve = new THREE.Vector3(0, 0, 0);
 
@@ -56,12 +74,269 @@ export default class Controls {
     //lookat
     // this.lookAtPosition = new THREE.Vector3(0, 0, 0);
     //path of scroll
-    this.setPath();
+
     //when scrolling the camera moves
     // this.onScrolling();
   }
 
-  setPath() {
+  setScrollTrigger() {
+    let mm = GSAP.matchMedia();
+
+    mm.add("(min-width: 968px)", () => {
+      console.log("DESKTOP");
+      this.firstMoveTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".first-scroll",
+          markers: true,
+          start: "top top",
+          end: "bottom bottom",
+
+          /*makes the animation more smooth */
+          scrub: 0.6,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      });
+      this.secondMoveTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".second-scroll",
+          markers: true,
+          start: "top top",
+          end: "bottom bottom",
+
+          onEnter: () => {
+            this.circle.classList.toggle("slideColored");
+            this.button.classList.toggle("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.toggle("buttonColored");
+            });
+          },
+
+          onEnterBack: () => {
+            this.circle.classList.remove("slideColored");
+            this.button.classList.remove("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.remove("buttonColored");
+            });
+          },
+
+          /*makes the animation more smooth */
+          scrub: 2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      });
+      this.thirdMoveTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".third-scroll",
+          markers: true,
+          start: "top top",
+          end: "bottom bottom",
+          onEnter: () => {
+            if (this.theme.theme === "dark") {
+              console.log(this.theme);
+              this.circle.classList.remove("slideColored");
+              this.button.classList.remove("buttonColored");
+              const paths = document.querySelectorAll("path");
+              paths.forEach((path) => {
+                path.classList.remove("buttonColored");
+              });
+            }
+          },
+
+          onEnterBack: () => {
+            if (this.theme.theme === "dark") {
+              this.circle.classList.toggle("slideColored");
+              this.button.classList.toggle("buttonColored");
+              const paths = document.querySelectorAll("path");
+              paths.forEach((path) => {
+                path.classList.toggle("buttonColored");
+              });
+            }
+          },
+          /*makes the animation more smooth */
+          scrub: 0.6,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      });
+
+      this.firstMoveTimeLine.to(this.room.position, {
+        x: () => {
+          /*a function that reruns when resized */
+          return this.sizes.width * 0.0015;
+        },
+      });
+
+      this.secondMoveTimeLine
+        .to(
+          this.room.position,
+          {
+            x: () => {
+              /*a function that reruns when resized */
+              return -1.05;
+            },
+            z: () => {
+              return this.sizes.height * 0.004;
+            },
+          } /*makes this to call at the same time*/,
+          "same"
+        )
+        .to(
+          this.room.scale,
+          {
+            x: 0.35,
+            y: 0.35,
+            z: 0.35,
+          },
+          /*makes this to call at the same time*/
+          "same"
+        )
+        .to(
+          this.rectlight,
+          {
+            width: 1 * 3.5,
+            height: 0.25 * 3.5,
+            intensity: 10,
+          },
+          /*makes this to call at the same time*/
+          "same"
+        );
+
+      this.thirdMoveTimeLine.to(this.camera.orthographicCamera.position, {
+        y: 1.25,
+        x: -1.5,
+      });
+    });
+
+    mm.add("(max-width: 799px)", () => {
+      console.log("MOBILE");
+
+      this.firstMoveTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".first-scroll",
+          markers: true,
+          start: "top top",
+          end: "bottom bottom",
+          onEnter: () => {
+            console.log("ArrivedHERE");
+          },
+          onLeave: () => {
+            console.log("LeftHERE");
+          },
+          /*makes the animation more smooth */
+          scrub: 0.6,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      });
+      this.secondMoveTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".second-scroll",
+          markers: true,
+          start: "top top",
+          end: "bottom bottom",
+          onEnter: () => {
+            console.log("Arrived");
+          },
+          onLeave: () => {
+            console.log("Arrived");
+          },
+          /*makes the animation more smooth */
+          scrub: 2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      });
+      this.thirdMoveTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".third-scroll",
+          markers: true,
+          start: "top top",
+          end: "bottom bottom",
+          onEnter: () => {
+            console.log("Arrived");
+          },
+          onLeave: () => {
+            console.log("LeftHERE");
+          },
+          /*makes the animation more smooth */
+          scrub: 0.6,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      });
+
+      //resets
+
+      this.room.scale.set(0.07, 0.07, 0.07);
+      this.rectlight.width = 0.07;
+      this.rectlight.width = 0.25;
+      this.firstMoveTimeLine.to(this.room.scale, {
+        x: 0.1,
+        y: 0.1,
+        z: 0.1,
+      });
+
+      this.secondMoveTimeLine
+        .to(
+          this.room.scale,
+          {
+            x: 0.35,
+            y: 0.35,
+            z: 0.35,
+          },
+          /*makes this to call at the same time*/
+          "same"
+        )
+        .to(
+          this.rectlight,
+          {
+            width: 1 * 3.5,
+            height: 0.25 * 3.5,
+            intensity: 10 / 3,
+          },
+          /*makes this to call at the same time*/
+          "same"
+        )
+        .to(this.room.position, { x: 1.5 }, "same");
+
+      this.thirdMoveTimeLine.to(this.camera.orthographicCamera.position, {
+        y: 3.5,
+        x: 2.75,
+      });
+    });
+
+    // this.timeline = GSAP.timeline();
+    // //moves our room
+    // this.timeline.to(this.room.position, {
+    //   x: () => {
+    //     /*a function that reruns when resized */
+    //     return this.sizes.width * 0.002;
+    //   },
+    //   scrollTrigger: {
+    //     /*targets the class of element*/
+    //     trigger: ".first-scroll",
+    //     markers: true,
+    //     start: "top top",
+    //     end: "bottom bottom",
+    //     onEnter: () => {
+    //       console.log("HERE");
+    //     },
+    //     /*makes the animation more smooth */
+    //     scrub: 0.6,
+    //     /* */
+    //     invalidateOnRefresh: true,
+    //   },
+    // });
     //   //create a path that camera can follow
     //   this.curve = new THREE.CatmullRomCurve3(
     //     [
@@ -92,29 +367,6 @@ export default class Controls {
     //     }
     //   });
     //scroll
-    this.timeline = GSAP.timeline();
-    //moves our room
-    this.timeline.to(this.room.position, {
-      x: () => {
-        /*a function that reruns when resized */
-        return this.sizes.width * 0.002;
-      },
-      scrollTrigger: {
-        /*targets the class of element*/
-        trigger: ".first-scroll",
-        markers: true,
-        start: "top top",
-        end: "bottom bottom",
-        onEnter:()=>{
-          console.log("HERE")
-        },
-        /*makes the animation more smooth */
-        scrub: 0.6,
-
-        /* */
-        invalidateOnRefresh: true,
-      },
-    });
   }
 
   resize() {}
