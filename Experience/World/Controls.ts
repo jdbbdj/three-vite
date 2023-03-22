@@ -224,12 +224,26 @@ export default class Controls {
           markers: true,
           start: "top top",
           end: "bottom bottom",
-          onEnter: () => {
-            console.log("ArrivedHERE");
+
+          onEnterBack: () => {
+            this.circle.classList.remove("slideColored");
+            this.button.classList.remove("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.remove("buttonColored");
+            });
           },
+
           onLeave: () => {
-            console.log("LeftHERE");
+            console.log(this.theme);
+            this.circle.classList.toggle("slideColored");
+            this.button.classList.toggle("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.toggle("buttonColored");
+            });
           },
+
           /*makes the animation more smooth */
           scrub: 0.6,
           /* */
@@ -244,10 +258,42 @@ export default class Controls {
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
-            console.log("Arrived");
+            console.log("mobile here2");
+            this.circle.classList.remove("slideColored");
+            this.button.classList.remove("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.remove("buttonColored");
+            });
           },
+
+          onLeaveBack: () => {
+            console.log("mobile here2");
+            this.circle.classList.toggle("slideColored");
+            this.button.classList.toggle("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.toggle("buttonColored");
+            });
+          },
+
+          onEnterBack: () => {
+            this.circle.classList.remove("slideColored");
+            this.button.classList.remove("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.remove("buttonColored");
+            });
+          },
+
           onLeave: () => {
-            console.log("Arrived");
+            console.log("mobile here1");
+            this.circle.classList.toggle("slideColored");
+            this.button.classList.toggle("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.toggle("buttonColored");
+            });
           },
           /*makes the animation more smooth */
           scrub: 2,
@@ -263,11 +309,43 @@ export default class Controls {
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
-            console.log("Arrived");
+            this.circle.classList.remove("slideColored");
+            this.button.classList.remove("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.remove("buttonColored");
+            });
           },
+
+          onEnterBack: () => {
+            this.circle.classList.remove("slideColored");
+            this.button.classList.remove("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.remove("buttonColored");
+            });
+          },
+
           onLeave: () => {
-            console.log("LeftHERE");
+            console.log(this.theme);
+            this.circle.classList.toggle("slideColored");
+            this.button.classList.toggle("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.toggle("buttonColored");
+            });
           },
+
+          onLeaveBack: () => {
+            console.log(this.theme);
+            this.circle.classList.toggle("slideColored");
+            this.button.classList.toggle("buttonColored");
+            const paths = document.querySelectorAll("path");
+            paths.forEach((path) => {
+              path.classList.toggle("buttonColored");
+            });
+          },
+
           /*makes the animation more smooth */
           scrub: 0.6,
           /* */
