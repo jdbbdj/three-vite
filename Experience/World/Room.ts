@@ -22,15 +22,22 @@ export default class Room {
     //animation of fish
     this.time = this.experience.time;
     this.room = this.loader.items.room;
+    console.log(this.room);
     this.actualRoom = this.room.scene;
     //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
-    const width = 1;
-    const height = 0.25;
-    this.pointlight = new THREE.RectAreaLight(0x80def9, 4, width, height);
+
+    this.pointlight = new THREE.SpotLight(
+      0x80def9,
+      1,
+      100,
+      Math.PI / 4,
+      0.5,
+      2
+    );
 
     //this.scene.add(helper2);
 
-    this.pointlight.position.set(7, 6, 0);
+    this.pointlight.position.set(6, 7.5, 0);
 
     this.pointlight.rotation.z = Math.PI / 10;
     this.pointlight.rotation.y = Math.PI / 2;
@@ -88,7 +95,7 @@ export default class Room {
   setAnimation() {
     this.mixer = new THREE.AnimationMixer(this.actualRoom);
     //could be fixed in blender but now its ok
-    this.swim = this.mixer.clipAction(this.room.animations[131]);
+    this.swim = this.mixer.clipAction(this.room.animations[10]);
     this.swim.play();
   }
 

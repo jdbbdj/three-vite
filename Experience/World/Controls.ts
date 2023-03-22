@@ -105,7 +105,9 @@ export default class Controls {
         markers: true,
         start: "top top",
         end: "bottom bottom",
-
+        onEnter:()=>{
+          console.log("HERE")
+        },
         /*makes the animation more smooth */
         scrub: 0.6,
 
