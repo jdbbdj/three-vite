@@ -66,6 +66,22 @@ export default class Room {
           map: this.loader.items.screen,
         });
       }
+
+      if (child.name === "MiniFloor") {
+        child.position.set(1.51845, -0.111023, 6.10803);
+      }
+
+      if (child.name === "Tumbler") {
+        child.position.set(-2.91421, -4.505689, 7.77921);
+      }
+
+      if (child.name === "Rock") {
+        child.position.set(-4.422, -6.47573, 7.17249);
+      }
+
+      if (child.name === "Light" || child.name === "Books") {
+        child.scale.set(0, 0, 0);
+      }
     });
     const width = 1;
     const height = 0.25;
