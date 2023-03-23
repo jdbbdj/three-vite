@@ -14,6 +14,9 @@ export default class Room {
   rotation: any;
   lerp: any;
   pointlight: any;
+  play1: any;
+  play2: any;
+  play3: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -111,7 +114,14 @@ export default class Room {
   setAnimation() {
     this.mixer = new THREE.AnimationMixer(this.actualRoom);
     //could be fixed in blender but now its ok
+    console.log(this.room.animations);
     this.swim = this.mixer.clipAction(this.room.animations[10]);
+    this.play1 = this.mixer.clipAction(this.room.animations[22]);
+    this.play2 = this.mixer.clipAction(this.room.animations[23]);
+    this.play3 = this.mixer.clipAction(this.room.animations[24]);
+    this.play1.play();
+    this.play2.play();
+    this.play3.play();
     this.swim.play();
   }
 

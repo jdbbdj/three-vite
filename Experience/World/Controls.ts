@@ -37,6 +37,9 @@ export default class Controls {
   fourth: any;
   fifth: any;
   secondPartTimeLine: any;
+  sections: NodeListOf<Element> | undefined;
+  progressWrapper: NodeListOf<Element> | undefined;
+  progressBar: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -98,7 +101,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".first-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
 
@@ -112,7 +115,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
 
@@ -144,7 +147,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".third-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
@@ -231,7 +234,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".first-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
 
@@ -264,7 +267,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
@@ -315,7 +318,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".third-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
@@ -407,11 +410,77 @@ export default class Controls {
     mm.add("", () => {
       /*mini platform */
 
+      this.sections = document.querySelectorAll(".section");
+      this.sections.forEach((section) => {
+        this.progressWrapper = section.querySelectorAll(".progress-wrapper");
+        this.progressBar = section.querySelector(".progress-bar");
+
+        if (section.classList.contains("right")) {
+          GSAP.to(section, {
+            borderTopLeftRadius: 10,
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "top top",
+
+              scrub: 0.6,
+            },
+          });
+          /*thin the border on botttom */
+          GSAP.to(section, {
+            borderBottomLeftRadius: 700,
+            scrollTrigger: {
+              trigger: section,
+              start: "bottom bottom",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+        }
+
+        if (section.classList.contains("left")) {
+          GSAP.to(section, {
+            borderTopRightRadius: 10,
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "top top",
+
+              scrub: 0.6,
+            },
+          });
+
+          /*thin the border on botttom */
+          GSAP.to(section, {
+            borderBottomRightRadius: 700,
+            scrollTrigger: {
+              trigger: section,
+              start: "bottom bottom",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+        }
+
+        /*progress bar length vertical */
+        GSAP.from(this.progressBar, {
+          scaleY: 0,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.4,
+            pin: this.progressWrapper,
+            pinSpacing: false,
+          },
+        });
+      });
+
       this.secondPartTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-          markers: true,
+
           start: "top top",
         },
       });
