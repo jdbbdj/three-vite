@@ -1,6 +1,7 @@
 import Experience from "..";
 import GSAP from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ASScroll from "@ashthornton/asscroll";
 export default class Controls {
   experience: Experience;
   scene: any;
@@ -40,6 +41,7 @@ export default class Controls {
   sections: NodeListOf<Element> | undefined;
   progressWrapper: NodeListOf<Element> | undefined;
   progressBar: any;
+  smooth: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -58,7 +60,7 @@ export default class Controls {
     });
     this.theme = this.experience.theme;
     GSAP.registerPlugin(ScrollTrigger);
-
+    this.smoothScroll();
     this.setScrollTrigger();
     // this.progress = 0;
     // this.dummyCurve = new THREE.Vector3(0, 0, 0);
@@ -587,6 +589,55 @@ export default class Controls {
     //     }
     //   });
     //scroll
+  }
+
+  setupAsScroll() {
+    /*copy and pasted */
+    const asscroll = new ASScroll({
+      ease: 0.4,
+      disableRaf: true,
+    });
+
+    GSAP.ticker.add(asscroll.update);
+
+    ScrollTrigger.defaults({
+      scroller: asscroll.containerElement,
+    });
+
+    ScrollTrigger.scrollerProxy(asscroll.containerElement, {
+      scrollTop(value: any) {
+        if (arguments.length) {
+          asscroll.currentPos = value;
+          return;
+        }
+        return asscroll.currentPos;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+      fixedMarkers: true,
+    });
+
+    asscroll.on("update", ScrollTrigger.update);
+    ScrollTrigger.addEventListener("refresh", asscroll.resize);
+
+    requestAnimationFrame(() => {
+      asscroll.enable({
+        newScrollElements: document.querySelectorAll(
+          ".gsap-marker-start, .gsap-marker-end, [asscroll]"
+        ),
+      });
+    });
+    return asscroll;
+  }
+
+  smoothScroll() {
+    this.smooth = this.setupAsScroll();
   }
 
   resize() {}
