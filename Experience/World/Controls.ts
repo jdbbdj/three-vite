@@ -42,13 +42,23 @@ export default class Controls {
   progressWrapper: NodeListOf<Element> | undefined;
   progressBar: any;
   smooth: any;
-
+  circle1: any;
+  circle2: any;
+  circle3: any;
+  firstCircleTimeLine: gsap.core.Timeline | undefined;
+  secondCircleTimeLine: gsap.core.Timeline | undefined;
+  thirdCircleTimeLine: gsap.core.Timeline | undefined;
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
     this.loader = this.experience.loader;
     this.time = this.experience.time;
     this.camera = this.experience.camera;
+
+    this.circle1 = this.experience.world.floor.circle;
+    this.circle2 = this.experience.world.floor.circle2;
+    this.circle3 = this.experience.world.floor.circle3;
+
     this.room = this.experience.world.room.actualRoom;
     this.sizes = this.experience.sizes;
     this.button = this.experience.theme?.toggleButton;
@@ -477,6 +487,61 @@ export default class Controls {
           },
         });
       });
+
+      /*circles*/
+
+      this.firstCircleTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".first-scroll",
+          start: "top top",
+          end: "bottom bottom",
+          /*makes the animation more smooth */
+          scrub: 0.2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      }).to(this.circle1.scale, {
+        x: 6,
+        y: 6,
+        z: 6,
+      });
+
+      this.secondCircleTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".second-scroll",
+          start: "top top",
+          end: "bottom bottom",
+          /*makes the animation more smooth */
+          scrub: 0.2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      }).to(this.circle2.scale, {
+        x: 6,
+        y: 6,
+        z: 6,
+      });
+
+      this.thirdCircleTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".third-scroll",
+          start: "top top",
+          end: "bottom bottom",
+          /*makes the animation more smooth */
+          scrub: 0.2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      }).to(this.circle3.scale, {
+        x: 6,
+        y: 6,
+        z: 6,
+      });
+
+      /*animates the mini floor*/
 
       this.secondPartTimeLine = GSAP.timeline({
         scrollTrigger: {

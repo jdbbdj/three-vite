@@ -13,12 +13,54 @@ export default class Floor {
   plane:
     | THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
     | undefined;
+  circle:
+    | THREE.Mesh<THREE.CircleGeometry, THREE.MeshStandardMaterial>
+    | undefined;
+  circle3:
+    | THREE.Mesh<THREE.CircleGeometry, THREE.MeshStandardMaterial>
+    | undefined;
+  circle2:
+    | THREE.Mesh<THREE.CircleGeometry, THREE.MeshStandardMaterial>
+    | undefined;
 
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
-
+    this.setCircles();
     this.setFloor();
+  }
+
+  setCircles() {
+    const geometry = new THREE.CircleGeometry(1, 48);
+    const material = new THREE.MeshStandardMaterial({ color: 0x1b2325 });
+    const material2 = new THREE.MeshStandardMaterial({ color: 0x251d1b });
+    const material3 = new THREE.MeshStandardMaterial({ color: 0xb5bbe2 });
+
+    this.circle = new THREE.Mesh(geometry, material);
+    this.circle3 = new THREE.Mesh(geometry, material3);
+    this.circle2 = new THREE.Mesh(geometry, material2);
+
+    this.circle.position.y = -0.09;
+    this.circle3.position.y = -0.07;
+    this.circle2.position.y = -0.08;
+
+    this.circle.scale.set(0, 0, 0);
+    this.circle3.scale.set(0, 0, 0);
+    this.circle2.scale.set(0, 0, 0);
+
+    this.circle.rotation.x =
+      this.circle2.rotation.x =
+      this.circle3.rotation.x =
+        -Math.PI / 2;
+
+    this.circle.receiveShadow =
+      this.circle2.receiveShadow =
+      this.circle3.receiveShadow =
+        true;
+
+    this.scene.add(this.circle);
+    this.scene.add(this.circle2);
+    this.scene.add(this.circle3);
   }
 
   setFloor() {

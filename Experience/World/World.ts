@@ -26,8 +26,8 @@ export default class World {
     this.theme = this.experience.theme;
     this.loader.on("ready", () => {
       this.environment = new Environment();
-      this.room = new Room();
       this.floor = new Floor();
+      this.room = new Room();
       this.controls = new Controls();
     });
 
