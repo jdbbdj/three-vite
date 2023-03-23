@@ -22,21 +22,10 @@ export default class Room {
     //animation of fish
     this.time = this.experience.time;
     this.room = this.loader.items.room;
+
     this.actualRoom = this.room.scene;
     //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
-    const width = 1;
-    const height = 0.25;
-    this.pointlight = new THREE.RectAreaLight(0x80def9, 4, width, height);
 
-    //this.scene.add(helper2);
-
-    this.pointlight.position.set(7, 6, 0);
-
-    this.pointlight.rotation.z = Math.PI / 10;
-    this.pointlight.rotation.y = Math.PI / 2;
-    // const rectLightHelper = new RectAreaLightHelper(this.pointlight);
-    // this.pointlight.add(rectLightHelper);
-    this.actualRoom.add(this.pointlight);
     //lerping rotation
     this.lerp = {
       current: 0,
@@ -64,7 +53,6 @@ export default class Room {
       }
 
       if (child.name === "Aquarium") {
-        console.log(child);
         child.material = new THREE.MeshPhysicalMaterial();
         child.material.roughness = 0;
         child.material.color.set(0x80def9);
@@ -78,8 +66,43 @@ export default class Room {
           map: this.loader.items.screen,
         });
       }
-    });
 
+      if (child.name === "MiniFloor") {
+        child.position.set(1.51845, -0.111023, 6.10803);
+      }
+
+      if (child.name === "Tumbler") {
+        child.position.set(-2.91421, -4.505689, 7.77921);
+      }
+
+      if (child.name === "Rock") {
+        child.position.set(-4.422, -6.47573, 7.17249);
+      }
+
+      if (child.name === "Light" || child.name === "Books") {
+        child.scale.set(0, 0, 0);
+      }
+    });
+    const width = 1;
+    const height = 0.25;
+    const intensity = 3;
+    this.pointlight = new THREE.RectAreaLight(
+      0xffffff,
+      intensity,
+      width,
+      height
+    );
+
+    this.pointlight.lookAt(0, 0, 0);
+    //this.scene.add(helper2);
+
+    this.pointlight.position.set(6.5, 7, 0);
+    this.pointlight.rotation.y = Math.PI - Math.PI / 4;
+
+    // const rectLightHelper = new RectAreaLightHelper(this.pointlight);
+    // this.pointlight.add(rectLightHelper);
+
+    this.actualRoom.add(this.pointlight);
     //shadow end
     this.scene.add(this.actualRoom);
     this.actualRoom.scale.set(0.11, 0.11, 0.11);
@@ -88,7 +111,7 @@ export default class Room {
   setAnimation() {
     this.mixer = new THREE.AnimationMixer(this.actualRoom);
     //could be fixed in blender but now its ok
-    this.swim = this.mixer.clipAction(this.room.animations[131]);
+    this.swim = this.mixer.clipAction(this.room.animations[10]);
     this.swim.play();
   }
 

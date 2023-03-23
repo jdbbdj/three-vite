@@ -38,6 +38,7 @@ export default class Environment {
 
     this.light = new THREE.AmbientLight("#ffffff", 0.4);
     this.scene.add(this.light);
+
     //pointlight
   }
 

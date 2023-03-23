@@ -14,16 +14,34 @@ body {
 :root {
   --primary-color: #1b2325;
   --secondary-color: #b5d1e2;
+  --primary-border: #251d1b;
+  --secondary-border: #e2c6b5;
+  --tertiary-colorn: #1b1e25;
+  --teritary-bordern: #b5bbe2;
 }
 
 .light-theme {
   --color-text: var(--primary-color);
   --background-color: var(--secondary-color);
+  --border: var(--secondary-border);
+  --border-next: var(--secondary-border);
+  --tertiary-border: var(--teritary-bordern);
 }
 
 .dark-theme {
   --color-text: var(--secondary-color);
   --background-color: var(--primary-color);
+  --border: var(--primary-border);
+  --border-next: var(--primary-border);
+  --tertiary-border: var(--tertiary-colorn);
+}
+
+h1,
+section,
+p,
+span,
+svg {
+  transition: background-color 0.5s, color 0.5s;
 }
 
 /*experience page 3D model--------------------------------------------------*/
@@ -94,12 +112,31 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+.toggle-button-scrolled {
+  background-color: var(--background-color);
+  box-shadow: var(--background-color) 0px 3px 8px;
+}
+
+.toggle-circle-scrolled {
+  background-color: var(--color-text);
+}
+
 /* .toggle-button:hover .toggle-circle {
   transform: scale(0.9);
 } */
 
 .slide {
   transform: translateX(24px);
+}
+
+.slideColored {
+  background-color: var(--color-text);
+}
+
+.buttonColored {
+  background-color: var(--background-color);
+  box-shadow: var(--background-color) 0px 3px 8px;
+  fill: var(--background-color);
 }
 
 /*sections---------------------------------------------------*/
@@ -248,4 +285,38 @@ body {
 /*svg*/
 path {
   fill: var(--color-text);
+}
+
+/*colored borders*/
+.anti-text {
+  color: var(--border-next);
+}
+
+.anti-border {
+  border-color: var(--border);
+}
+
+.anti-background {
+  border-color: var(--background-color);
+  background-color: var(--background-color);
+}
+
+.complimentary-text {
+  color: var(--border-next);
+}
+
+.complimentary-border {
+  border-color: var(--tertiary-border);
+}
+
+.complimentary-background {
+  background-color: var(--tertiary-border);
+  border-color: var(--tertiary-border);
+}
+
+/*media queries*/
+@media (max-width: 968px) {
+  .section {
+    width: 100%;
+  }
 }
