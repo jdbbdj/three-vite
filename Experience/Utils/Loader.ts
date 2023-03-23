@@ -73,7 +73,7 @@ export default class Loader extends EventEmitter {
 
   singleAssetLoaded(asset: any, file: any) {
     this.items[asset.name] = file;
-    console.log(`asset ${asset.name} is loading`);
+
     this.loaded++;
     if (this.loaded === this.queue) {
       this.emit("ready");

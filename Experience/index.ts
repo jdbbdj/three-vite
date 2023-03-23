@@ -12,6 +12,7 @@ import Camera from "./Camera";
 import Renderer from "./Renderer";
 import World from "./World/World";
 import Theme from "./Theme";
+import Preloader from "./World/Preloader";
 export default class Experience {
   canvas: any;
   static instance: any;
@@ -23,6 +24,7 @@ export default class Experience {
   world: any;
   loader: any;
   theme: Theme | undefined;
+  preloader: any;
 
   constructor(canvas: any) {
     if (Experience.instance) {
@@ -38,7 +40,7 @@ export default class Experience {
     this.loader = new Loader(assets);
     this.theme = new Theme();
     this.world = new World();
-
+    this.preloader = new Preloader();
     this.sizes.on("resize", () => {
       this.resize();
     });

@@ -17,6 +17,7 @@ export default class Room {
   play1: any;
   play2: any;
   play3: any;
+  roomChildren: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -27,6 +28,8 @@ export default class Room {
     this.room = this.loader.items.room;
 
     this.actualRoom = this.room.scene;
+
+    this.roomChildren = {};
     //const helper2 = new THREE.CameraHelper(this.pointLight.shadow.camera);
 
     //lerping rotation
@@ -85,6 +88,15 @@ export default class Room {
       if (child.name === "Light" || child.name === "Books") {
         child.scale.set(0, 0, 0);
       }
+
+      child.scale.set(0, 0, 0);
+      if (child.name === "LoaderCube") {
+        child.scale.set(1, 1, 1);
+        child.position.set(0, 1.799, 0);
+        child.rotation.y = Math.PI / 4;
+      }
+
+      this.roomChildren[child.name.toLowerCase()] = child;
     });
     const width = 1;
     const height = 0.25;
@@ -106,6 +118,7 @@ export default class Room {
     // this.pointlight.add(rectLightHelper);
 
     this.actualRoom.add(this.pointlight);
+    this.roomChildren["pointlight"] = this.pointlight;
     //shadow end
     this.scene.add(this.actualRoom);
     this.actualRoom.scale.set(0.11, 0.11, 0.11);
@@ -114,12 +127,14 @@ export default class Room {
   setAnimation() {
     this.mixer = new THREE.AnimationMixer(this.actualRoom);
     //could be fixed in blender but now its ok
-    console.log(this.room.animations);
+
     this.swim = this.mixer.clipAction(this.room.animations[10]);
     this.play1 = this.mixer.clipAction(this.room.animations[22]);
     this.play2 = this.mixer.clipAction(this.room.animations[23]);
     this.play3 = this.mixer.clipAction(this.room.animations[24]);
+    /*shape keys*/
     this.play1.play();
+    /*key animation*/
     this.play2.play();
     this.play3.play();
     this.swim.play();

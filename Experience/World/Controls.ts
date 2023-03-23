@@ -108,7 +108,7 @@ export default class Controls {
       this.room.position.set(0, 0, 0);
       this.rectlight.width = 1;
       this.rectlight.width = 0.25;
-      console.log("DESKTOP");
+
       this.firstMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
@@ -164,7 +164,6 @@ export default class Controls {
           end: "bottom bottom",
           onEnter: () => {
             if (this.theme.theme === "dark") {
-              console.log(this.theme);
               this.circle.classList.remove("slideColored");
               this.button.classList.remove("buttonColored");
               const paths = document.querySelectorAll("path");
@@ -240,8 +239,6 @@ export default class Controls {
     });
 
     mm.add("(max-width: 799px)", () => {
-      console.log("MOBILE");
-
       this.firstMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
@@ -260,7 +257,6 @@ export default class Controls {
           },
 
           onLeave: () => {
-            console.log(this.theme);
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -283,7 +279,6 @@ export default class Controls {
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
-            console.log("mobile here2");
             this.circle.classList.remove("slideColored");
             this.button.classList.remove("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -293,7 +288,6 @@ export default class Controls {
           },
 
           onLeaveBack: () => {
-            console.log("mobile here2");
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -312,7 +306,6 @@ export default class Controls {
           },
 
           onLeave: () => {
-            console.log("mobile here1");
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -352,7 +345,6 @@ export default class Controls {
           },
 
           onLeave: () => {
-            console.log(this.theme);
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -362,7 +354,6 @@ export default class Controls {
           },
 
           onLeaveBack: () => {
-            console.log(this.theme);
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -551,7 +542,7 @@ export default class Controls {
           start: "top top",
         },
       });
-
+      /*tweens*/
       this.room.children.forEach((child: any) => {
         if (child.name === "MiniFloor") {
           this.first = GSAP.to(child.position, {
