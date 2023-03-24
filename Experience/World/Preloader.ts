@@ -53,7 +53,7 @@ export default class Preloader extends EventEmitter {
             y: 1.4,
             z: 1.4,
             ease: "back.out(2.5)",
-            duration: 1.5,
+            duration: 1,
           })
           .to(this.room.position, {
             x: -1,
@@ -68,7 +68,7 @@ export default class Preloader extends EventEmitter {
             y: 1.4,
             z: 1.4,
             ease: "back.out(2.5)",
-            duration: 1.5,
+            duration: 1,
           })
           .to(this.room.position, {
             z: -1,
@@ -128,7 +128,7 @@ export default class Preloader extends EventEmitter {
             x: 0,
             y: 0,
             z: 0,
-            duration: 5,
+            duration: 2,
           },
           "room"
         )
@@ -138,17 +138,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 5,
-          },
-          "room"
-        )
-        .to(
-          this.roomChildren.roomwalls.scale,
-          {
-            x: 1,
-            y: 1,
-            z: 1,
-            duration: 5,
+            duration: 2,
           },
           "room"
         )
@@ -158,7 +148,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "stands"
         )
@@ -168,7 +158,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "stands"
         )
@@ -178,7 +168,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "stands"
         )
@@ -188,7 +178,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "tops"
         )
@@ -198,7 +188,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "tops"
         )
@@ -208,7 +198,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "tops"
         )
@@ -218,7 +208,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "displays"
         )
@@ -228,7 +218,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "displays"
         )
@@ -238,7 +228,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "displays"
         )
@@ -248,7 +238,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.9,
+            duration: 0.4,
           },
           "displays"
         )
@@ -256,7 +246,7 @@ export default class Preloader extends EventEmitter {
           x: 1,
           y: 1,
           z: 1,
-          duration: 0.5,
+          duration: 0.3,
         })
         .to(
           this.roomChildren.keybs.scale,
@@ -264,7 +254,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.5,
+            duration: 0.2,
           },
           "hide"
         )
@@ -274,7 +264,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.5,
+            duration: 0.2,
           },
           "hide"
         )
@@ -284,7 +274,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.5,
+            duration: 0.2,
           },
           "hide"
         )
@@ -294,7 +284,7 @@ export default class Preloader extends EventEmitter {
             x: 1,
             y: 1,
             z: 1,
-            duration: 0.5,
+            duration: 0.3,
           },
           "hide"
         )
@@ -302,25 +292,25 @@ export default class Preloader extends EventEmitter {
           x: 1,
           y: 1,
           z: 1,
-          duration: 0.5,
+          duration: 0.3,
         })
         .to(this.roomChildren.plants.scale, {
           x: 1,
           y: 1,
           z: 1,
-          duration: 0.5,
+          duration: 0.3,
         })
         .to(this.roomChildren.fish.scale, {
           x: 1,
           y: 1,
           z: 1,
-          duration: 0.5,
+          duration: 0.3,
         })
         .to(this.roomChildren.aquarium.scale, {
           x: 1,
           y: 1,
           z: 1,
-          duration: 0.5,
+          duration: 0.3,
           onComplete: resolve,
         });
     });
@@ -341,9 +331,9 @@ export default class Preloader extends EventEmitter {
     let currentY = e.touches[0].clientY;
     let difference = this.initialY - currentY;
     if (difference > 0) {
-      this.playSecondIntro();
       console.log("swipped up");
       this.removeEventListeners();
+      this.playSecondIntro();
     }
     this.initialY = null;
   }
@@ -365,5 +355,7 @@ export default class Preloader extends EventEmitter {
   }
   async playSecondIntro() {
     await this.playAnotherIntro();
+
+    this.emit("enablecontrols");
   }
 }

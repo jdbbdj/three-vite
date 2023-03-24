@@ -48,13 +48,14 @@ export default class Controls {
   firstCircleTimeLine: gsap.core.Timeline | undefined;
   secondCircleTimeLine: gsap.core.Timeline | undefined;
   thirdCircleTimeLine: gsap.core.Timeline | undefined;
+  device: any;
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
     this.loader = this.experience.loader;
     this.time = this.experience.time;
     this.camera = this.experience.camera;
-
+    this.device = this.experience.sizes.device;
     this.circle1 = this.experience.world.floor.circle;
     this.circle2 = this.experience.world.floor.circle2;
     this.circle3 = this.experience.world.floor.circle3;
@@ -70,6 +71,13 @@ export default class Controls {
     });
     this.theme = this.experience.theme;
     GSAP.registerPlugin(ScrollTrigger);
+
+    if (this.device === "mobile") {
+      document.body.classList.toggle("shown");
+    } else {
+      document.body.classList.remove("shown");
+    }
+
     this.smoothScroll();
     this.setScrollTrigger();
     // this.progress = 0;

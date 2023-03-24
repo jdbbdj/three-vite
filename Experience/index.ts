@@ -13,6 +13,7 @@ import Renderer from "./Renderer";
 import World from "./World/World";
 import Theme from "./Theme";
 import Preloader from "./World/Preloader";
+import Controls from "./World/Controls";
 export default class Experience {
   canvas: any;
   static instance: any;
@@ -25,6 +26,7 @@ export default class Experience {
   loader: any;
   theme: Theme | undefined;
   preloader: any;
+  controls: Controls | undefined;
 
   constructor(canvas: any) {
     if (Experience.instance) {
@@ -41,6 +43,9 @@ export default class Experience {
     this.theme = new Theme();
     this.world = new World();
     this.preloader = new Preloader();
+
+    this.preloader.on("enablecontrols", () => (this.controls = new Controls()));
+
     this.sizes.on("resize", () => {
       this.resize();
     });
