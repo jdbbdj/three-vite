@@ -22,6 +22,7 @@ export default class Preloader extends EventEmitter {
   moveFlag: boolean | undefined;
   scaleFlag: any;
   third: gsap.core.Timeline | undefined;
+  arrowDownTimeline: any;
   constructor() {
     super();
     this.experience = new Experience(null);
@@ -98,12 +99,18 @@ export default class Preloader extends EventEmitter {
   playAnotherIntro() {
     return new Promise((resolve: any) => {
       this.secondTimeLine = GSAP.timeline();
-
+      this.arrowDownTimeline.to(".arrow-down", {
+        marginTop: 20,
+      });
       this.secondTimeLine
         .to(".animated-intro-text", {
           yPercent: 102,
           stagger: 0.09,
           ease: "back.in(3)",
+        })
+        .to(".arrow-down", {
+          opacity: 0,
+          duration: 0.5,
         })
         .to(
           this.room.position,
@@ -406,6 +413,17 @@ export default class Preloader extends EventEmitter {
 
   async playIntro() {
     await this.intro();
+
+    this.arrowDownTimeline = GSAP.timeline({ repeat: -1 });
+    this.arrowDownTimeline
+      .to(".arrow-down", {
+        y: 5,
+        ease: "easeOut",
+      })
+      .to(".arrow-down", {
+        y: -5,
+        ease: "easeOut",
+      });
     this.moveFlag = true;
     this.scrollOnceEvent = this.onScroll.bind(this);
     this.touch = this.onTouch.bind(this);
@@ -418,6 +436,8 @@ export default class Preloader extends EventEmitter {
     this.moveFlag = false;
     this.scaleFlag = true;
     await this.playAnotherIntro();
+
+    this.arrowDownTimeline.pause();
     this.scaleFlag = false;
     this.emit("enablecontrols");
   }

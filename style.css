@@ -375,7 +375,15 @@ path {
   background-color: var(--tertiary-border);
   border-color: var(--tertiary-border);
 }
+/*arrow-down*/
+.arrow-down {
+  position: absolute;
+  left: 45%;
+  top: 80%;
+}
 
+.arrow {
+}
 /*media queries*/
 @media (max-width: 968px) {
   .section {
@@ -416,5 +424,9 @@ path {
   .hero-second-subheading2 {
     font-size: 14px;
     transform: translate(0%, 475%);
+  }
+
+  .arrow-down {
+    top: 85%;
   }
 }
