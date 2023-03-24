@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import Experience from "..";
 import GSAP from "gsap";
-import convert from "../Utils/DivToSpan";
+import convert from "../Utils/divtospan";
 export default class Preloader extends EventEmitter {
   experience: Experience;
   scene: any;
