@@ -289,6 +289,23 @@ svg {
   height: 100vh;
 }
 
+/*pre loader section--------------------------------------------------*/
+.animated {
+  transform: translateY(100%);
+  display: inline-block; /*makes it easier to transform*/
+}
+
+.intro-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--primary-color);
+  font-size: 26px;
+  font-weight: 500;
+  transform: translate(-15%, -70%);
+}
+
+/*pre loader section--------------------------------------------------*/
 .hero-wrapper {
   position: relative;
   height: 100%;
@@ -320,7 +337,8 @@ svg {
   right: -60px;
 }
 
-.hero-second-subheading {
+.hero-second-subheading,
+.hero-second-subheading2 {
   font-size: 32px;
   font-weight: 400;
   color: var(--color-text);
@@ -371,5 +389,32 @@ path {
   .progress-bar-wrapper-left {
     right: 0;
     left: auto;
+  }
+
+  .intro-text {
+    width: 100%;
+    top: 50%;
+    font-size: 16px;
+    left: 17.5%;
+  }
+
+  .hero-main-title {
+    font-size: 19px;
+    width: 100%;
+    transform: translate(0%, -250%);
+    text-align: center;
+  }
+
+  .hero-main-description {
+    font-size: 12px;
+    width: 100%;
+    transform: translate(0%, -325%);
+    text-align: center;
+  }
+
+  .hero-second-subheading,
+  .hero-second-subheading2 {
+    font-size: 14px;
+    transform: translate(0%, 475%);
   }
 }

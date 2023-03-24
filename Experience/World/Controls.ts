@@ -247,6 +247,7 @@ export default class Controls {
     });
 
     mm.add("(max-width: 799px)", () => {
+      this.room.scale.set(0.07, 0.07, 0.07);
       this.firstMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
@@ -379,7 +380,6 @@ export default class Controls {
 
       //resets
 
-      this.room.scale.set(0.07, 0.07, 0.07);
       this.room.position.set(0, 0, 0);
       this.rectlight.width = 0.07;
       this.rectlight.height = 0.25;

@@ -64,6 +64,7 @@ export default class Experience {
   }
 
   update() {
+    this.preloader.update();
     this.camera.update();
     //animation of fish
     this.world.update();

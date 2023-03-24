@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import Experience from "..";
 import GSAP from "gsap";
+import convert from "../Utils/DivToSpan";
 export default class Preloader extends EventEmitter {
   experience: Experience;
   scene: any;
@@ -18,6 +19,9 @@ export default class Preloader extends EventEmitter {
   touch: any;
   touchMove: any;
   initialY: any;
+  moveFlag: boolean | undefined;
+  scaleFlag: any;
+  third: gsap.core.Timeline | undefined;
   constructor() {
     super();
     this.experience = new Experience(null);
@@ -42,6 +46,12 @@ export default class Preloader extends EventEmitter {
 
   intro() {
     return new Promise((resolve: any) => {
+      convert(document.querySelector(".intro-text"));
+      convert(document.querySelector(".hero-main-title"));
+      convert(document.querySelector(".hero-main-description"));
+      convert(document.querySelector(".hero-second-subheading"));
+      convert(document.querySelector(".hero-second-subheading2"));
+
       this.timeline = GSAP.timeline();
       this.room = this.experience.world.room.actualRoom;
 
@@ -59,7 +69,6 @@ export default class Preloader extends EventEmitter {
             x: -1,
             ease: "power1.out",
             duration: 0.7,
-            onComplete: resolve,
           });
       } else {
         this.timeline
@@ -74,9 +83,15 @@ export default class Preloader extends EventEmitter {
             z: -1,
             ease: "power1.out",
             duration: 0.7,
-            onComplete: resolve,
           });
       }
+
+      this.timeline.to(".animated-intro-text", {
+        yPercent: -102,
+        stagger: 0.09,
+        ease: "backout(3)",
+        onComplete: resolve,
+      });
     });
   }
 
@@ -85,6 +100,11 @@ export default class Preloader extends EventEmitter {
       this.secondTimeLine = GSAP.timeline();
 
       this.secondTimeLine
+        .to(".animated-intro-text", {
+          yPercent: 102,
+          stagger: 0.09,
+          ease: "back.in(3)",
+        })
         .to(
           this.room.position,
           {
@@ -141,6 +161,46 @@ export default class Preloader extends EventEmitter {
             duration: 2,
           },
           "room"
+        )
+        .to(
+          ".animated-hero-main-title",
+          {
+            yPercent: -100,
+            stagger: 0.07,
+            ease: "backout(1.3)",
+            onComplete: resolve,
+          },
+          "words"
+        )
+        .to(
+          ".animated-hero-main-description",
+          {
+            yPercent: -100,
+            stagger: 0.07,
+            ease: "backout(1.3)",
+            onComplete: resolve,
+          },
+          "words"
+        )
+        .to(
+          ".animated-hero-second-subheading",
+          {
+            yPercent: -100,
+            stagger: 0.07,
+            ease: "backout(1.3)",
+            onComplete: resolve,
+          },
+          "words"
+        )
+        .to(
+          ".animated-hero-second-subheading2",
+          {
+            yPercent: -100,
+            stagger: 0.07,
+            ease: "backout(1.3)",
+            onComplete: resolve,
+          },
+          "words"
         )
         .to(
           this.roomChildren.stands.scale,
@@ -346,6 +406,7 @@ export default class Preloader extends EventEmitter {
 
   async playIntro() {
     await this.intro();
+    this.moveFlag = true;
     this.scrollOnceEvent = this.onScroll.bind(this);
     this.touch = this.onTouch.bind(this);
     this.touchMove = this.onTouchMove.bind(this);
@@ -354,8 +415,35 @@ export default class Preloader extends EventEmitter {
     window.addEventListener("touchmove", this.touchMove);
   }
   async playSecondIntro() {
+    this.moveFlag = false;
+    this.scaleFlag = true;
     await this.playAnotherIntro();
-
+    this.scaleFlag = false;
     this.emit("enablecontrols");
+  }
+
+  move() {
+    if (this.device === "desktop") {
+      this.room.position.set(-1, 0, 0);
+    } else {
+      this.room.position.set(0, 0, -1);
+    }
+  }
+
+  scale() {
+    if (this.device === "desktop") {
+      this.room.scale.set(0.15, 0.15, 0.15);
+    } else {
+      this.room.scale.set(0.07, 0.07, 0.07);
+    }
+  }
+
+  update() {
+    if (this.moveFlag) {
+      this.move();
+    }
+    if (this.scaleFlag) {
+      this.scale();
+    }
   }
 }
