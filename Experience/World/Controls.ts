@@ -1,6 +1,7 @@
 import Experience from "..";
 import GSAP from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ASScroll from "@ashthornton/asscroll";
 export default class Controls {
   experience: Experience;
   scene: any;
@@ -37,13 +38,28 @@ export default class Controls {
   fourth: any;
   fifth: any;
   secondPartTimeLine: any;
-
+  sections: NodeListOf<Element> | undefined;
+  progressWrapper: NodeListOf<Element> | undefined;
+  progressBar: any;
+  smooth: any;
+  circle1: any;
+  circle2: any;
+  circle3: any;
+  firstCircleTimeLine: gsap.core.Timeline | undefined;
+  secondCircleTimeLine: gsap.core.Timeline | undefined;
+  thirdCircleTimeLine: gsap.core.Timeline | undefined;
+  device: any;
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
     this.loader = this.experience.loader;
     this.time = this.experience.time;
     this.camera = this.experience.camera;
+    this.device = this.experience.sizes.device;
+    this.circle1 = this.experience.world.floor.circle;
+    this.circle2 = this.experience.world.floor.circle2;
+    this.circle3 = this.experience.world.floor.circle3;
+
     this.room = this.experience.world.room.actualRoom;
     this.sizes = this.experience.sizes;
     this.button = this.experience.theme?.toggleButton;
@@ -56,6 +72,13 @@ export default class Controls {
     this.theme = this.experience.theme;
     GSAP.registerPlugin(ScrollTrigger);
 
+    if (this.device === "mobile") {
+      document.body.classList.toggle("shown");
+    } else {
+      document.body.classList.remove("shown");
+    }
+
+    this.smoothScroll();
     this.setScrollTrigger();
     // this.progress = 0;
     // this.dummyCurve = new THREE.Vector3(0, 0, 0);
@@ -93,12 +116,12 @@ export default class Controls {
       this.room.position.set(0, 0, 0);
       this.rectlight.width = 1;
       this.rectlight.width = 0.25;
-      console.log("DESKTOP");
+
       this.firstMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".first-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
 
@@ -112,7 +135,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
 
@@ -144,12 +167,11 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".third-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
             if (this.theme.theme === "dark") {
-              console.log(this.theme);
               this.circle.classList.remove("slideColored");
               this.button.classList.remove("buttonColored");
               const paths = document.querySelectorAll("path");
@@ -225,13 +247,12 @@ export default class Controls {
     });
 
     mm.add("(max-width: 799px)", () => {
-      console.log("MOBILE");
-
+      this.room.scale.set(0.07, 0.07, 0.07);
       this.firstMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".first-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
 
@@ -245,7 +266,6 @@ export default class Controls {
           },
 
           onLeave: () => {
-            console.log(this.theme);
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -264,11 +284,10 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
-            console.log("mobile here2");
             this.circle.classList.remove("slideColored");
             this.button.classList.remove("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -278,7 +297,6 @@ export default class Controls {
           },
 
           onLeaveBack: () => {
-            console.log("mobile here2");
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -297,7 +315,6 @@ export default class Controls {
           },
 
           onLeave: () => {
-            console.log("mobile here1");
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -315,7 +332,7 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".third-scroll",
-          markers: true,
+
           start: "top top",
           end: "bottom bottom",
           onEnter: () => {
@@ -337,7 +354,6 @@ export default class Controls {
           },
 
           onLeave: () => {
-            console.log(this.theme);
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -347,7 +363,6 @@ export default class Controls {
           },
 
           onLeaveBack: () => {
-            console.log(this.theme);
             this.circle.classList.toggle("slideColored");
             this.button.classList.toggle("buttonColored");
             const paths = document.querySelectorAll("path");
@@ -365,7 +380,6 @@ export default class Controls {
 
       //resets
 
-      this.room.scale.set(0.07, 0.07, 0.07);
       this.room.position.set(0, 0, 0);
       this.rectlight.width = 0.07;
       this.rectlight.height = 0.25;
@@ -407,15 +421,136 @@ export default class Controls {
     mm.add("", () => {
       /*mini platform */
 
+      this.sections = document.querySelectorAll(".section");
+      this.sections.forEach((section) => {
+        this.progressWrapper = section.querySelectorAll(".progress-wrapper");
+        this.progressBar = section.querySelector(".progress-bar");
+
+        if (section.classList.contains("right")) {
+          GSAP.to(section, {
+            borderTopLeftRadius: 10,
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "top top",
+
+              scrub: 0.6,
+            },
+          });
+          /*thin the border on botttom */
+          GSAP.to(section, {
+            borderBottomLeftRadius: 700,
+            scrollTrigger: {
+              trigger: section,
+              start: "bottom bottom",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+        }
+
+        if (section.classList.contains("left")) {
+          GSAP.to(section, {
+            borderTopRightRadius: 10,
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "top top",
+
+              scrub: 0.6,
+            },
+          });
+
+          /*thin the border on botttom */
+          GSAP.to(section, {
+            borderBottomRightRadius: 700,
+            scrollTrigger: {
+              trigger: section,
+              start: "bottom bottom",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+        }
+
+        /*progress bar length vertical */
+        GSAP.from(this.progressBar, {
+          scaleY: 0,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.4,
+            pin: this.progressWrapper,
+            pinSpacing: false,
+          },
+        });
+      });
+
+      /*circles*/
+
+      this.firstCircleTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".first-scroll",
+          start: "top top",
+          end: "bottom bottom",
+          /*makes the animation more smooth */
+          scrub: 0.2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      }).to(this.circle1.scale, {
+        x: 6,
+        y: 6,
+        z: 6,
+      });
+
+      this.secondCircleTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".second-scroll",
+          start: "top top",
+          end: "bottom bottom",
+          /*makes the animation more smooth */
+          scrub: 0.2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      }).to(this.circle2.scale, {
+        x: 6,
+        y: 6,
+        z: 6,
+      });
+
+      this.thirdCircleTimeLine = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".third-scroll",
+          start: "top top",
+          end: "bottom bottom",
+          /*makes the animation more smooth */
+          scrub: 0.2,
+          /* */
+          invalidateOnRefresh: true,
+        },
+      }).to(this.circle3.scale, {
+        x: 6,
+        y: 6,
+        z: 6,
+      });
+
+      /*animates the mini floor*/
+
       this.secondPartTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-          markers: true,
+
           start: "top top",
         },
       });
-
+      /*tweens*/
       this.room.children.forEach((child: any) => {
         if (child.name === "MiniFloor") {
           this.first = GSAP.to(child.position, {
@@ -518,6 +653,55 @@ export default class Controls {
     //     }
     //   });
     //scroll
+  }
+
+  setupAsScroll() {
+    /*copy and pasted */
+    const asscroll = new ASScroll({
+      ease: 0.4,
+      disableRaf: true,
+    });
+
+    GSAP.ticker.add(asscroll.update);
+
+    ScrollTrigger.defaults({
+      scroller: asscroll.containerElement,
+    });
+
+    ScrollTrigger.scrollerProxy(asscroll.containerElement, {
+      scrollTop(value: any) {
+        if (arguments.length) {
+          asscroll.currentPos = value;
+          return;
+        }
+        return asscroll.currentPos;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+      fixedMarkers: true,
+    });
+
+    asscroll.on("update", ScrollTrigger.update);
+    ScrollTrigger.addEventListener("refresh", asscroll.resize);
+
+    requestAnimationFrame(() => {
+      asscroll.enable({
+        newScrollElements: document.querySelectorAll(
+          ".gsap-marker-start, .gsap-marker-end, [asscroll]"
+        ),
+      });
+    });
+    return asscroll;
+  }
+
+  smoothScroll() {
+    this.smooth = this.setupAsScroll();
   }
 
   resize() {}

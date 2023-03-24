@@ -10,6 +10,14 @@ body {
   color: var(--background-color);
 }
 
+body {
+  overflow: hidden;
+}
+
+.shown {
+  overflow: visible;
+}
+
 /*Variables--------------------------------------------------*/
 :root {
   --primary-color: #1b2325;
@@ -60,7 +68,6 @@ svg {
   z-index: 99999;
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 .page-wrapper {
@@ -151,15 +158,52 @@ svg {
   padding: 1000px 4%;
   margin: 0;
   background-color: var(--color-text);
+  position: relative;
+
+  overflow: hidden;
 }
 
 .left {
   margin-right: auto;
+  border-top-right-radius: 700px 700px;
+  border-bottom-right-radius: 0px 0px;
 }
 .right {
   margin-left: auto;
+
+  border-top-left-radius: 700px 700px;
+  border-bottom-left-radius: 0px 0px;
 }
 
+/*progress*/
+
+.progress-wrapper {
+  height: 0;
+  width: 12px;
+  z-index: 9999;
+}
+
+.progress-bar-wrapper-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress-bar-wrapper-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.progress-bar {
+  height: 100vh;
+  width: 100%;
+  background-color: var(--background-color);
+  transform-origin: top center;
+  transform: scaleY(1);
+}
+
+/*progress*/
 .section-intro-wrapper {
   position: relative;
   padding: 20% 5%;
@@ -245,6 +289,23 @@ svg {
   height: 100vh;
 }
 
+/*pre loader section--------------------------------------------------*/
+.animated {
+  transform: translateY(100%);
+  display: inline-block; /*makes it easier to transform*/
+}
+
+.intro-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--primary-color);
+  font-size: 26px;
+  font-weight: 500;
+  transform: translate(-15%, -70%);
+}
+
+/*pre loader section--------------------------------------------------*/
 .hero-wrapper {
   position: relative;
   height: 100%;
@@ -276,7 +337,8 @@ svg {
   right: -60px;
 }
 
-.hero-second-subheading {
+.hero-second-subheading,
+.hero-second-subheading2 {
   font-size: 32px;
   font-weight: 400;
   color: var(--color-text);
@@ -318,5 +380,41 @@ path {
 @media (max-width: 968px) {
   .section {
     width: 100%;
+  }
+
+  .progress-wrapper {
+    width: 6px;
+  }
+
+  .progress-bar-wrapper-left {
+    right: 0;
+    left: auto;
+  }
+
+  .intro-text {
+    width: 100%;
+    top: 50%;
+    font-size: 16px;
+    left: 17.5%;
+  }
+
+  .hero-main-title {
+    font-size: 19px;
+    width: 100%;
+    transform: translate(0%, -250%);
+    text-align: center;
+  }
+
+  .hero-main-description {
+    font-size: 12px;
+    width: 100%;
+    transform: translate(0%, -325%);
+    text-align: center;
+  }
+
+  .hero-second-subheading,
+  .hero-second-subheading2 {
+    font-size: 14px;
+    transform: translate(0%, 475%);
   }
 }

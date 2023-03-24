@@ -10,6 +10,7 @@
     "host": "vite --host"
   },
   "devDependencies": {
+    "@ashthornton/asscroll": "^2.0.11",
     "@types/events": "^3.0.0",
     "@types/three": "^0.149.0",
     "events": "^3.3.0",

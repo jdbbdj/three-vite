@@ -1,10 +1,11 @@
+import { EventEmitter } from "events";
 import Experience from "..";
 
-import Controls from "./Controls";
 import Room from "./Room";
 import Environment from "./Environment";
 import Floor from "./Floor";
-export default class World {
+import Preloader from "./Preloader";
+export default class World extends EventEmitter {
   experience: Experience;
   sizes: any;
   scene: any;
@@ -16,7 +17,9 @@ export default class World {
   controls: any;
   floor: Floor | undefined;
   theme: any;
+  preloader: Preloader | undefined;
   constructor() {
+    super();
     this.experience = new Experience(null);
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
@@ -26,9 +29,10 @@ export default class World {
     this.theme = this.experience.theme;
     this.loader.on("ready", () => {
       this.environment = new Environment();
-      this.room = new Room();
       this.floor = new Floor();
-      this.controls = new Controls();
+      this.room = new Room();
+      //this.controls = new Controls();
+      this.emit("worldready", () => {});
     });
 
     this.theme.on("switch", (theme: any) => {
