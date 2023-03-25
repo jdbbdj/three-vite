@@ -57,6 +57,14 @@ export default class Preloader extends EventEmitter {
       this.room = this.experience.world.room.actualRoom;
 
       this.roomChildren = this.experience.world.room.roomChildren;
+
+      this.timeline.to(".preloader", {
+        opacity: 0,
+        delay: 0.2,
+        onComplete: () => {
+          document.querySelector("preloader")?.classList.toggle("hidden");
+        },
+      });
       if (this.device === "desktop") {
         this.timeline
           .to(this.roomChildren.loadercube.scale, {
@@ -300,6 +308,16 @@ export default class Preloader extends EventEmitter {
           "displays"
         )
         .to(
+          this.roomChildren.window.scale,
+          {
+            x: 1,
+            y: 1,
+            z: 1,
+            duration: 0.4,
+          },
+          "displays"
+        )
+        .to(
           this.roomChildren.aquariumframe.scale,
           {
             x: 1,
@@ -378,6 +396,10 @@ export default class Preloader extends EventEmitter {
           y: 1,
           z: 1,
           duration: 0.3,
+        })
+        .to(".arrow-down", {
+          opacity: 1,
+          duration: 0.5,
           onComplete: resolve,
         });
     });
@@ -437,7 +459,6 @@ export default class Preloader extends EventEmitter {
     this.scaleFlag = true;
     await this.playAnotherIntro();
 
-    this.arrowDownTimeline.pause();
     this.scaleFlag = false;
     this.emit("enablecontrols");
   }

@@ -49,6 +49,7 @@ export default class Controls {
   secondCircleTimeLine: gsap.core.Timeline | undefined;
   thirdCircleTimeLine: gsap.core.Timeline | undefined;
   device: any;
+
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
