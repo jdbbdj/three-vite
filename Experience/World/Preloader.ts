@@ -57,7 +57,10 @@ export default class Preloader extends EventEmitter {
       this.room = this.experience.world.room.actualRoom;
 
       this.roomChildren = this.experience.world.room.roomChildren;
-
+      this.timeline.set(".animated", {
+        y: 0,
+        yPercent: 100,
+      });
       this.timeline.to(".preloader", {
         opacity: 0,
         delay: 0.2,
@@ -96,7 +99,7 @@ export default class Preloader extends EventEmitter {
       }
 
       this.timeline.to(".animated-intro-text", {
-        yPercent: -102,
+        yPercent: 0,
         stagger: 0.09,
         ease: "backout(3)",
         onComplete: resolve,
@@ -112,7 +115,7 @@ export default class Preloader extends EventEmitter {
       });
       this.secondTimeLine
         .to(".animated-intro-text", {
-          yPercent: 102,
+          yPercent: 100,
           stagger: 0.09,
           ease: "back.in(3)",
         })
@@ -180,7 +183,7 @@ export default class Preloader extends EventEmitter {
         .to(
           ".animated-hero-main-title",
           {
-            yPercent: -100,
+            yPercent: 0,
             stagger: 0.07,
             ease: "backout(1.3)",
             onComplete: resolve,
@@ -190,7 +193,7 @@ export default class Preloader extends EventEmitter {
         .to(
           ".animated-hero-main-description",
           {
-            yPercent: -100,
+            yPercent: 0,
             stagger: 0.07,
             ease: "backout(1.3)",
             onComplete: resolve,
@@ -200,7 +203,7 @@ export default class Preloader extends EventEmitter {
         .to(
           ".animated-hero-second-subheading",
           {
-            yPercent: -100,
+            yPercent: 0,
             stagger: 0.07,
             ease: "backout(1.3)",
             onComplete: resolve,
@@ -210,7 +213,7 @@ export default class Preloader extends EventEmitter {
         .to(
           ".animated-hero-second-subheading2",
           {
-            yPercent: -100,
+            yPercent: 0,
             stagger: 0.07,
             ease: "backout(1.3)",
             onComplete: resolve,
@@ -472,6 +475,8 @@ export default class Preloader extends EventEmitter {
   }
 
   scale() {
+    this.roomChildren.pointlight.width = 0;
+    this.roomChildren.pointlight.height = 0;
     if (this.device === "desktop") {
       this.room.scale.set(0.15, 0.15, 0.15);
     } else {
