@@ -67,6 +67,7 @@ export default class Controls {
     this.circle = this.experience.theme?.toggleCircle;
     this.room.children.forEach((child: any) => {
       if (child.type === "RectAreaLight") {
+        console.log("TRUEE");
         this.rectlight = child;
       }
     });
@@ -116,7 +117,7 @@ export default class Controls {
       this.room.scale.set(0.15, 0.15, 0.15);
       this.room.position.set(0, 0, 0);
       this.rectlight.width = 1;
-      this.rectlight.width = 0.25;
+      this.rectlight.height = 0.25;
 
       this.firstMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
@@ -235,7 +236,7 @@ export default class Controls {
           {
             width: 1 * 3.5,
             height: 0.25 * 3.5,
-            intensity: 10,
+            intensity: 5,
           },
           /*makes this to call at the same time*/
           "same"
@@ -382,7 +383,7 @@ export default class Controls {
       //resets
 
       this.room.position.set(0, 0, 0);
-      this.rectlight.width = 0.07;
+      this.rectlight.width = 1;
       this.rectlight.height = 0.25;
       this.firstMoveTimeLine.to(this.room.scale, {
         x: 0.1,
@@ -406,7 +407,7 @@ export default class Controls {
           {
             width: 1 * 3.5,
             height: 0.25 * 3.5,
-            intensity: 10 / 3,
+            intensity: 5,
           },
           /*makes this to call at the same time*/
           "same"

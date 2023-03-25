@@ -100,7 +100,7 @@ export default class Room {
     });
     const width = 1;
     const height = 0.25;
-    const intensity = 3;
+    const intensity = 5;
     this.pointlight = new THREE.RectAreaLight(
       0xffffff,
       intensity,
