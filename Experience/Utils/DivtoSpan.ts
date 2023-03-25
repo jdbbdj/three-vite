@@ -4,7 +4,7 @@ export default function divtospan(element: any) {
     .split("")
     .map((char: any) => {
       if (char === " ") {
-        return `<span>$nbsp;</span>`;
+        return `<span>&nbsp;</span>`;
       }
 
       return `<span class="animated animated-${element.className}">${char}</span>`;
