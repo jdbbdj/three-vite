@@ -49,7 +49,10 @@ export default class Controls {
   secondCircleTimeLine: gsap.core.Timeline | undefined;
   thirdCircleTimeLine: gsap.core.Timeline | undefined;
   device: any;
-
+  links: any;
+  linksTimeline: any;
+  linkIcon: any;
+  linkShown: any;
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
@@ -422,6 +425,32 @@ export default class Controls {
 
     mm.add("", () => {
       /*mini platform */
+      let clickHandler = 0;
+      this.links = document.querySelector(".links-below");
+      this.linkIcon = document.querySelector(".link-handler");
+      this.linkShown = document.querySelector(".link-shown");
+      this.linksTimeline = GSAP.timeline({ paused: true });
+
+      this.linksTimeline
+        .to(this.links, { height: 100, translateY: -100 }, "same")
+        .to(this.linkIcon, { opacity: 0, display: "none" }, "same")
+        .to(this.linkShown, {
+          opacity: 1,
+          display: "flex",
+          flexDirection: "column",
+          height: 100,
+        });
+
+      console.log(this.links);
+      this.links.addEventListener("click", () => {
+        if (clickHandler === 0) {
+          this.linksTimeline.play();
+          clickHandler++;
+        } else if (clickHandler === 1) {
+          this.linksTimeline.reverse();
+          clickHandler = 0;
+        }
+      });
 
       this.sections = document.querySelectorAll(".section");
       this.sections.forEach((section) => {
