@@ -148,7 +148,8 @@ svg {
 }
 
 .sun-wrapper,
-.moon-wrapper {
+.moon-wrapper,
+.child-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -444,6 +445,45 @@ path {
   color: var(--primary-color);
 }
 
+.links-below {
+  position: absolute;
+  top: 90%;
+  right: 0%;
+  background-color: var(--color-text);
+  box-shadow: var(--color-text) 0px 3px 8px;
+  height: 26px;
+  width: 26px;
+  display: flex;
+  align-items: center;
+  border-radius: 13px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.link-handler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.link-shown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  display: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.link-handler path {
+  fill: var(--background-color);
+}
+
+.link-shown path {
+  fill: var(--background-color);
+}
+
 .arrow-shown {
   opacity: 1;
 }
@@ -498,5 +538,26 @@ path {
 
   .arrow-down {
     top: 85%;
+  }
+
+  .links-below {
+    position: absolute;
+    top: 85%;
+    right: -30%;
+    background-color: var(--color-text);
+    box-shadow: var(--color-text) 0px 3px 8px;
+    height: 46px;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    border-radius: 23px;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .link-handler {
+  }
+
+  .link-shown {
   }
 }
