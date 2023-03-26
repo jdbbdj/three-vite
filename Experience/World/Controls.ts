@@ -432,7 +432,7 @@ export default class Controls {
       this.linksTimeline = GSAP.timeline({ paused: true });
 
       this.linksTimeline
-        .to(this.links, { height: 100, translateY: -100 }, "same")
+        .to(this.links, { height: 100 }, "same")
         .to(this.linkIcon, { opacity: 0, display: "none" }, "same")
         .to(this.linkShown, {
           opacity: 1,
