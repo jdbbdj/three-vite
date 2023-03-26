@@ -447,15 +447,15 @@ path {
 
 .links-below {
   position: absolute;
-  top: 90%;
-  right: 0%;
+  bottom: 48px;
+  right: -10.5%;
   background-color: var(--color-text);
   box-shadow: var(--color-text) 0px 3px 8px;
-  height: 26px;
-  width: 26px;
+  height: 36px;
+  width: 36px;
   display: flex;
   align-items: center;
-  border-radius: 13px;
+  border-radius: 18px;
   justify-content: center;
   cursor: pointer;
 }
@@ -541,18 +541,11 @@ path {
   }
 
   .links-below {
-    position: absolute;
-    top: 85%;
-    right: -30%;
-    background-color: var(--color-text);
-    box-shadow: var(--color-text) 0px 3px 8px;
+    bottom: 90px;
+    right: -15%;
     height: 46px;
     width: 46px;
-    display: flex;
-    align-items: center;
     border-radius: 23px;
-    justify-content: center;
-    cursor: pointer;
   }
 
   .link-handler {
