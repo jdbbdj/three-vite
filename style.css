@@ -476,6 +476,15 @@ path {
   transition: all 0.2s ease-in-out;
 }
 
+.link-shown-below {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 48px;
+
+  transition: all 0.2s ease-in-out;
+}
+
 .link-handler path {
   fill: var(--background-color);
 }
@@ -552,5 +561,9 @@ path {
   }
 
   .link-shown {
+  }
+
+  .link-shown-below {
+    flex-direction: row;
   }
 }
