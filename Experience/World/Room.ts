@@ -18,6 +18,8 @@ export default class Room {
   play2: any;
   play3: any;
   roomChildren: any;
+  scaleX: any;
+  scaleY: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -85,13 +87,10 @@ export default class Room {
           const size = new THREE.Vector2(max.x - min.x, max.y - min.y);
           const aspect = texture.image.width / texture.image.height;
 
-          let scaleX = 1;
-          let scaleY = 1;
-
           if (aspect > size.x / size.y) {
-            scaleY = size.x / (size.y * aspect);
+            this.scaleY = size.x / (size.y * aspect);
           } else {
-            scaleX = (size.y * aspect) / size.x;
+            this.scaleX = (size.y * aspect) / size.x;
           }
         });
         child.material = new THREE.MeshBasicMaterial({
