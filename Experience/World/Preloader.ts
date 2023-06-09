@@ -113,6 +113,8 @@ export default class Preloader extends EventEmitter {
       this.arrowDownTimeline.to(".arrow-down", {
         marginTop: 20,
       });
+
+      console.log(this.roomChildren);
       this.secondTimeLine
         .to(".animated-intro-text", {
           yPercent: 100,
@@ -311,7 +313,7 @@ export default class Preloader extends EventEmitter {
           "displays"
         )
         .to(
-          this.roomChildren.window.scale,
+          this.roomChildren.window001.scale,
           {
             x: 1,
             y: 1,

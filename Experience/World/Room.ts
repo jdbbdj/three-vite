@@ -73,6 +73,32 @@ export default class Room {
         });
       }
 
+      if (child.name === "Frame4Front") {
+        const textureLoader = new THREE.TextureLoader();
+        const texture = textureLoader.load("textures/react4.png", (texture) => {
+          texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+          texture.minFilter = THREE.LinearFilter;
+          texture.magFilter = THREE.LinearFilter;
+
+          child.geometry.computeBoundingBox();
+          const { min, max } = child.geometry.boundingBox;
+          const size = new THREE.Vector2(max.x - min.x, max.y - min.y);
+          const aspect = texture.image.width / texture.image.height;
+
+          let scaleX = 1;
+          let scaleY = 1;
+
+          if (aspect > size.x / size.y) {
+            scaleY = size.x / (size.y * aspect);
+          } else {
+            scaleX = (size.y * aspect) / size.x;
+          }
+        });
+        child.material = new THREE.MeshBasicMaterial({
+          map: texture,
+        });
+      }
+
       if (child.name === "MiniFloor") {
         child.position.set(1.51845, -0.111023, 6.10803);
       }
