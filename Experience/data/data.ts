@@ -36,6 +36,7 @@ export const frontend_models = [
 
 export const backend_models = [
   "backendcounter",
+  "backendcountertop",
   "backendcountershelves",
   "backendcurtain",
   "backendcurtainrod",
