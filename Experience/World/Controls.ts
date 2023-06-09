@@ -2,6 +2,7 @@ import Experience from "..";
 import GSAP from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ASScroll from "@ashthornton/asscroll";
+import { backend_models, frontend_models } from "../data/data";
 export default class Controls {
   experience: Experience;
   scene: any;
@@ -15,6 +16,17 @@ export default class Controls {
   dummyCurve: any;
   camera: any;
   progress: number | undefined;
+  animations: any;
+  play1: any;
+  play2: any;
+  play3: any;
+  play4: any;
+  play5: any;
+  backend_play1: any;
+  backend_play2: any;
+  backend_play3: any;
+  backend_play4: any;
+  backend_play5: any;
   //lerp: { current: number; target: number; ease: number };
   position: any;
   back: any;
@@ -37,7 +49,9 @@ export default class Controls {
   third: any;
   fourth: any;
   fifth: any;
+  sixth: any;
   secondPartTimeLine: any;
+  thirdPartTimeline: any;
   sections: NodeListOf<Element> | undefined;
   progressWrapper: NodeListOf<Element> | undefined;
   progressBar: any;
@@ -53,6 +67,11 @@ export default class Controls {
   linksTimeline: any;
   linkIcon: any;
   linkShown: any;
+  roomChildren: any;
+  animation1: any;
+  animation2: any;
+  animation3: any;
+  animation4: any;
   constructor() {
     this.experience = new Experience(null);
     this.scene = this.experience.scene;
@@ -63,17 +82,18 @@ export default class Controls {
     this.circle1 = this.experience.world.floor.circle;
     this.circle2 = this.experience.world.floor.circle2;
     this.circle3 = this.experience.world.floor.circle3;
-
+    this.animations = this.experience.world.room?.room.animations;
     this.room = this.experience.world.room.actualRoom;
     this.sizes = this.experience.sizes;
     this.button = this.experience.theme?.toggleButton;
     this.circle = this.experience.theme?.toggleCircle;
+    this.mixer = this.experience.world.room?.mixer;
     this.room.children.forEach((child: any) => {
       if (child.type === "RectAreaLight") {
-        console.log("TRUEE");
         this.rectlight = child;
       }
     });
+    this.roomChildren = this.experience.world.room.roomChildren;
     this.theme = this.experience.theme;
     GSAP.registerPlugin(ScrollTrigger);
 
@@ -85,32 +105,6 @@ export default class Controls {
 
     this.smoothScroll();
     this.setScrollTrigger();
-    // this.progress = 0;
-    // this.dummyCurve = new THREE.Vector3(0, 0, 0);
-
-    //lerping making your movement more smoother
-    // this.position = new THREE.Vector3(0, 0, 0);
-    // this.lerp = {
-    //   current: 0,
-    //   target: 0,
-    //   ease: 0.1,
-    // };
-
-    //for camera to directional in parallel with the curve
-    // this.directionalVector = new THREE.Vector3(0, 0, 0);
-
-    //this is static that always points upward this will determine if the camera points inside or outside
-    //this uses substraction of vectors
-    // this.staticVector = new THREE.Vector3(0, -1, 0);
-    //this will be the cross product of vector and will always be perpendicular to two of given vectors
-    // this.crossVector = new THREE.Vector3(0, 0, 0);
-
-    //lookat
-    // this.lookAtPosition = new THREE.Vector3(0, 0, 0);
-    //path of scroll
-
-    //when scrolling the camera moves
-    // this.onScrolling();
   }
 
   setScrollTrigger() {
@@ -218,6 +212,9 @@ export default class Controls {
               /*a function that reruns when resized */
               return -1.05;
             },
+            y: () => {
+              return 5;
+            },
             z: () => {
               return this.sizes.height * 0.004;
             },
@@ -235,6 +232,22 @@ export default class Controls {
           "same"
         )
         .to(
+          this.rectlight.position,
+          {
+            x: () => {
+              return 2.608;
+            },
+            y: () => {
+              return -5;
+            },
+            z: () => {
+              return 2.1654;
+            },
+          },
+          /*makes this to call at the same time*/
+          "same"
+        )
+        .to(
           this.rectlight,
           {
             width: 1 * 3.5,
@@ -245,10 +258,15 @@ export default class Controls {
           "same"
         );
 
-      this.thirdMoveTimeLine.to(this.camera.orthographicCamera.position, {
-        y: 1.25,
-        x: -1.5,
-      });
+      this.thirdMoveTimeLine.to(
+        this.room.position,
+        {
+          y: () => {
+            return 10;
+          },
+        } /*makes this to call at the same time*/,
+        "same"
+      );
     });
 
     mm.add("(max-width: 799px)", () => {
@@ -333,6 +351,16 @@ export default class Controls {
           invalidateOnRefresh: true,
         },
       });
+
+      this.secondMoveTimeLine.to(
+        this.room.position,
+        {
+          y: () => {
+            return 5;
+          },
+        } /*makes this to call at the same time*/,
+        "same"
+      );
       this.thirdMoveTimeLine = GSAP.timeline({
         scrollTrigger: {
           /*targets the class of element*/
@@ -382,7 +410,15 @@ export default class Controls {
           invalidateOnRefresh: true,
         },
       });
-
+      this.secondMoveTimeLine.to(
+        this.room.position,
+        {
+          y: () => {
+            return 1.25;
+          },
+        } /*makes this to call at the same time*/,
+        "same"
+      );
       //resets
 
       this.room.position.set(0, 0, 0);
@@ -394,33 +430,26 @@ export default class Controls {
         z: 0.1,
       });
 
-      this.secondMoveTimeLine
-        .to(
-          this.room.scale,
-          {
-            x: 0.35,
-            y: 0.35,
-            z: 0.35,
-          },
-          /*makes this to call at the same time*/
-          "same"
-        )
-        .to(
-          this.rectlight,
-          {
-            width: 1 * 3.5,
-            height: 0.25 * 3.5,
-            intensity: 5,
-          },
-          /*makes this to call at the same time*/
-          "same"
-        )
-        .to(this.room.position, { x: 1.5 }, "same");
+      this.secondMoveTimeLine.to(
+        this.rectlight,
+        {
+          width: 1 * 3.5,
+          height: 0.25 * 3.5,
+          intensity: 5,
+        },
+        /*makes this to call at the same time*/
+        "same"
+      );
 
-      this.thirdMoveTimeLine.to(this.camera.orthographicCamera.position, {
-        y: 3.5,
-        x: 2.75,
-      });
+      this.thirdMoveTimeLine.to(
+        this.room.position,
+        {
+          y: () => {
+            return 2.75;
+          },
+        } /*makes this to call at the same time*/,
+        "same"
+      );
     });
 
     mm.add("", () => {
@@ -441,7 +470,6 @@ export default class Controls {
           height: 100,
         });
 
-      console.log(this.links);
       this.links.addEventListener("click", () => {
         if (clickHandler === 0) {
           this.linksTimeline.play();
@@ -577,8 +605,16 @@ export default class Controls {
         scrollTrigger: {
           /*targets the class of element*/
           trigger: ".second-scroll",
-
           start: "top top",
+          onEnter: () => {
+            this.play1 = this.mixer.clipAction(this.animations[62]);
+            this.play2 = this.mixer.clipAction(this.animations[66]);
+            this.play3 = this.mixer.clipAction(this.animations[67]);
+            /*shape keys*/
+            this.play1.play();
+            this.play2.play();
+            this.play3.play();
+          },
         },
       });
       /*tweens*/
@@ -630,60 +666,55 @@ export default class Controls {
       this.secondPartTimeLine.add(this.third, "-=0.2");
       this.secondPartTimeLine.add(this.fourth);
       this.secondPartTimeLine.add(this.fifth, "-=0.1");
-    });
+      frontend_models.forEach((model) => {
+        this.secondPartTimeLine.to(
+          this.roomChildren[model].scale,
+          {
+            x: 1,
+            y: 1,
+            z: 1,
+            ease: "power1.out",
+            duration: 0.7,
+          },
+          "same"
+        );
+      });
 
-    // this.timeline = GSAP.timeline();
-    // //moves our room
-    // this.timeline.to(this.room.position, {
-    //   x: () => {
-    //     /*a function that reruns when resized */
-    //     return this.sizes.width * 0.002;
-    //   },
-    //   scrollTrigger: {
-    //     /*targets the class of element*/
-    //     trigger: ".first-scroll",
-    //     markers: true,
-    //     start: "top top",
-    //     end: "bottom bottom",
-    //     onEnter: () => {
-    //       console.log("HERE");
-    //     },
-    //     /*makes the animation more smooth */
-    //     scrub: 0.6,
-    //     /* */
-    //     invalidateOnRefresh: true,
-    //   },
-    // });
-    //   //create a path that camera can follow
-    //   this.curve = new THREE.CatmullRomCurve3(
-    //     [
-    //       new THREE.Vector3(-5, 0, 0),
-    //       new THREE.Vector3(0, 0, -5),
-    //       new THREE.Vector3(5, 0, 0),
-    //       new THREE.Vector3(0, 0, 5),
-    //     ],
-    //     true
-    //   );
-    //   const points = this.curve.getPoints(50);
-    //   const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    //   const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-    //   // Create the final object to add to the scene
-    //   const curveObject = new THREE.Line(geometry, material);
-    //   this.scene.add(curveObject);
-    // }
-    // onScrolling() {
-    //   window.addEventListener("wheel", (e) => {
-    //     //scroll up
-    //     if (e.deltaY > 0) {
-    //       this.lerp.target += 0.01;
-    //       //helper for increase
-    //       this.back = false;
-    //     } else if (e.deltaY < 0) {
-    //       this.lerp.target -= 0.01;
-    //       this.back = true;
-    //     }
-    //   });
-    //scroll
+      this.thirdPartTimeline = GSAP.timeline({
+        scrollTrigger: {
+          /*targets the class of element*/
+          trigger: ".third-scroll",
+          start: "top top",
+          onEnter: () => {
+            this.backend_play1 = this.mixer.clipAction(this.animations[95]);
+            this.backend_play2 = this.mixer.clipAction(this.animations[98]);
+            this.backend_play3 = this.mixer.clipAction(this.animations[99]);
+            this.backend_play4 = this.mixer.clipAction(this.animations[100]);
+            this.backend_play5 = this.mixer.clipAction(this.animations[101]);
+            /*shape keys*/
+            this.backend_play1.play();
+            this.backend_play2.play();
+            this.backend_play3.play();
+            this.backend_play4.play();
+            this.backend_play5.play();
+          },
+        },
+      });
+
+      backend_models.forEach((model) => {
+        this.thirdPartTimeline.to(
+          this.roomChildren[model].scale,
+          {
+            x: 1,
+            y: 1,
+            z: 1,
+            ease: "power1.out",
+            duration: 0.7,
+          },
+          "same"
+        );
+      });
+    });
   }
 
   setupAsScroll() {
@@ -738,45 +769,6 @@ export default class Controls {
   resize() {}
 
   update() {
-    //creating smooth camera movement
-    //LERPING ROTATIONS
-    //making sure your value is in range
-    // this.lerp.target = GSAP.utils.clamp(0, 1, this.lerp.target);
-    // this.lerp.current = GSAP.utils.clamp(0, 1, this.lerp.current);
-    //this part makes your camera points perpendicular to the curve
-    //this.curve.getPointAt(this.lerp.current % 1, this.position);
-    //this.camera.orthographicCamera.position.copy(this.position);
-    //substraction of vectors to be caught to used for cross product
-    //this.directionalVector.subVectors(
-    //  this.curve.getPointAt((this.lerp.current % 1) + 0.000001),
-    //  this.position
-    //);
-    //unit vector conversion
-    //this.directionalVector.normalize();
-    //cross product
-    //this.crossVector.crossVectors(this.directionalVector, this.staticVector);
-    //this makes the values inverse and makes the camera focus more accurate
-    //this.crossVector.multiplyScalar(100000);
-    //this.camera.orthographicCamera.lookAt(this.crossVector);
-    //--------------------BOTTOM ARE INITIAL FOR EXPLANATION------------------------
-    //making it automatic
-    // if (this.back) {
-    //   this.lerp.target -= 0.001;
-    // } else {
-    //   this.lerp.target += 0.001;
-    // }
-    //get the first point on catmul rom curve
-    //getpoint first param is the percentage 0 -1
-    //second param is the basis of points
-    // this.curve.getPointAt(this.lerp.current, this.position);
-    //watcher of the next point
-    // this.curve.getPointAt(
-    //   (this.lerp.current += 0.00001) % 1,
-    //   this.lookAtPosition
-    // );
-    //copy the position
-    // this.camera.orthographicCamera.position.copy(this.position);
-    //this makes your camera align with the curve
-    // this.camera.orthographicCamera.lookAt(this.lookAtPosition);
+    this.mixer.update(this.time.delta * 0.0009);
   }
 }

@@ -18,6 +18,8 @@ export default class Room {
   play2: any;
   play3: any;
   roomChildren: any;
+  scaleX: any;
+  scaleY: any;
 
   constructor() {
     this.experience = new Experience(null);
@@ -70,6 +72,29 @@ export default class Room {
       if (child.name === "MonitorScreen") {
         child.material = new THREE.MeshBasicMaterial({
           map: this.loader.items.screen,
+        });
+      }
+
+      if (child.name === "Frame4Front") {
+        const textureLoader = new THREE.TextureLoader();
+        const texture = textureLoader.load("textures/react4.png", (texture) => {
+          texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+          texture.minFilter = THREE.LinearFilter;
+          texture.magFilter = THREE.LinearFilter;
+
+          child.geometry.computeBoundingBox();
+          const { min, max } = child.geometry.boundingBox;
+          const size = new THREE.Vector2(max.x - min.x, max.y - min.y);
+          const aspect = texture.image.width / texture.image.height;
+
+          if (aspect > size.x / size.y) {
+            this.scaleY = size.x / (size.y * aspect);
+          } else {
+            this.scaleX = (size.y * aspect) / size.x;
+          }
+        });
+        child.material = new THREE.MeshBasicMaterial({
+          map: texture,
         });
       }
 
